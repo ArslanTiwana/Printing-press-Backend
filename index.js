@@ -11,12 +11,12 @@ app.use(cors())
 app.use('/assets',express.static('assets'));
 // Available Routes
 app.use('/api/auth', require('./routes/auth'))
-app.use('/api/notes', require('./routes/notes'))
-app.use('/api/trips', require('./routes/trip'))
-app.use('/api/travellers', require('./routes/traveller'))
-
-
-
+app.use('/api/client', require('./routes/client'))
+app.use('/api/plates', require('./routes/plates'))
+app.use('/api/panaflex', require('./routes/panaflex'))
+app.use('/api/film', require('./routes/film'))
+app.use('/api/colorPrint', require('./routes/colorPrint'))
+app.use('/api/weddingCard', require('./routes/weddingCard'))
 
 app.listen(port, () => {
   console.log(`backend listening at http://localhost:${port}`)
