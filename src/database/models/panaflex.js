@@ -1,8 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Panaflex extends Model {
-
     static associate(models) {
       models.Order.hasMany(models.Panaflex, {
         foreignKey: "orderId",
@@ -59,11 +60,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue:"pending" 
       },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
+      },
     },
     {
       sequelize,
       modelName: "Panaflex",
       tableName: "Panaflex",
+      timestamps:false
     },
   );
   return Panaflex;

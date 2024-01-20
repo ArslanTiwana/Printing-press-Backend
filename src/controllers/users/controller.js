@@ -1,17 +1,16 @@
 const { successResponse, errorResponse } = require("../../utils/response/response")
 const { createAccessToken } = require('../../middlewares/jwt')
 const bcrypt = require("bcrypt");
-const DbLayer = require('./database')
+const dbLayer = require('./database')
 const Service = require('./service')
 const { sendVerificationEmail, sendForgetPasswordEmail, sendForgetPasswordSMS, sendVerificationSMS } = require('../../utils/constants/constants')
 const moment = require('moment');
-const dbLayer = require("./database");
 
 class UserController {
   static async login(req, res) {
     try {
       const { username, password } = req.body;
-      const userInfo = await DbLayer.getUser(username);
+      const userInfo = await dbLayer.getUser(username);
       if (!userInfo) {
         return res.json(errorResponse(404, "No User Exist with These Credentials"));
       }
@@ -32,7 +31,7 @@ class UserController {
     try {
       const body = req.body
       body.password = await Service.hashedPassword(body.password)
-      const user = await DbLayer.createUser(body)
+      const user = await dbLayer.createUser(body)
       if (user) {
         return res.json(successResponse(201, "User created successfully", user));
       } else {
@@ -49,7 +48,7 @@ class UserController {
     const verificationCode = Math.floor(1000 + Math.random() * 9000);
     const codeExpiry = moment(new Date()).unix() + 900
     try {
-      const userInfo = await DbLayer.getUser(username);
+      const userInfo = await dbLayer.getUser(username);
       if (userInfo) {
         await userInfo.update({ verificationCode, codeExpiry })
         sendForgetPasswordEmail(username, verificationCode)
@@ -68,7 +67,7 @@ class UserController {
     const dt = moment(new Date()).unix()
     const newPassword = await Service.hashedPassword(password)
     try {
-      const userInfo = await DbLayer.getUser(username);
+      const userInfo = await dbLayer.getUser(username);
       if (userInfo) {
         if (userInfo.codeExpiry > dt) {
           if (userInfo.verificationCode === code) {

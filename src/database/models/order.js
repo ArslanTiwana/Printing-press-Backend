@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
 
@@ -20,13 +21,20 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
+        defaultValue:"pending"
+      },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
       },
     },
     {
       sequelize,
       modelName: "Order",
       tableName: "Order",
+      timestamps:false
     },
   );
   return Order;

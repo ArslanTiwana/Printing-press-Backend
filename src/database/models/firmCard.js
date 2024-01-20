@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class FirmCard extends Model {
 
@@ -15,11 +17,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
+      },
     },
     {
       sequelize,
       modelName: "FirmCard",
       tableName: "FirmCard",
+      timestamps:false
     },
   );
   return FirmCard;

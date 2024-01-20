@@ -1,11 +1,14 @@
 const {hash}=require('bcrypt')
 class ServiceLayer {
 
-    static async hashedPassword(password) {
-        return await hash(password, 12).catch((err) => {
-            console.log('error in Hashed Password!', err);
-            return undefined;
-          });
+    static  modifiedBody(body,id) {
+        const modifiedBody=body.map(item=>{
+            return {
+                ...item,
+                orderId:id
+            }
+        })
+        return modifiedBody
     }
 }
 module.exports=ServiceLayer

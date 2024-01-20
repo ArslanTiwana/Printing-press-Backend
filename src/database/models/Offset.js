@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Offset extends Model {
 
@@ -81,11 +83,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue:"pending" 
       },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
+      },
     },
     {
       sequelize,
       modelName: "Offset",
       tableName: "Offset",
+      timestamps:false
     },
   );
   return Offset;

@@ -4,8 +4,6 @@
 // });
 // export const port = Number(process.env.API_PORT);
 
-// export const PORTAL_URL = String(process.env.PORTAL_URL);
-
 // // Database configuration
 // export const db_host = String(process.env.DB_HOST);
 // export const db_port = Number(process.env.DB_PORT);

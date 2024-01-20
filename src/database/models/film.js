@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Film extends Model {
 
@@ -47,11 +49,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue:"pending" 
       },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
+      },
     },
     {
       sequelize,
       modelName: "Film",
       tableName: "Film",
+      timestamps:false
     },
   );
   return Film;

@@ -1,8 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+const moment =require('moment')
+
 module.exports = (sequelize, DataTypes) => {
   class Plates extends Model {
-
     static associate(models) {
       models.Order.hasMany(models.Plates, {
         foreignKey: "orderId",
@@ -39,11 +40,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue:"pending" 
       },
+      createdOn:{
+        type:DataTypes.BIGINT,
+        allowNull:false,
+        defaultValue:moment(new Date()).unix()
+      },
     },
     {
       sequelize,
       modelName: "Plates",
       tableName: "Plates",
+      timestamps:false
     },
   );
   return Plates;
