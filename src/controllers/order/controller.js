@@ -65,9 +65,10 @@ class UserController {
   }
   static async getAll(req, res) {
     try {
-      const result = dbLayer.getAll()
+      const result = await dbLayer.getAll()
+      console.log(result)
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)
@@ -75,11 +76,11 @@ class UserController {
     }
   }
   static async getById(req, res) {
-    const id= req.params;
+    const {id}= req.params;
     try {
-      const result = dbLayer.getById(id)
+      const result = await dbLayer.getById(id)
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)
@@ -88,11 +89,11 @@ class UserController {
   }
 
   static async getByClient(req, res) {
-    const id= req.params;
+    const {id}= req.params;
     try {
-      const result = dbLayer.getByClient(id)
+      const result = await dbLayer.getByClient(id)
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)

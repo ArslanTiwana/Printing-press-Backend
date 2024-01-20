@@ -4,7 +4,7 @@ class dbLayer {
     static async getAll() {
         return await models.Film.findAll();
     }
-    static async getById() {
+    static async getById(id) {
         return await models.Film.findByPk(id);
     }
     static async create(body) {

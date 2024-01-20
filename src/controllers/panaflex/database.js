@@ -4,7 +4,7 @@ class dbLayer {
     static async getAll() {
         return await models.Panaflex.findAll();
     }
-    static async getById() {
+    static async getById(id) {
         return await models.Panaflex.findByPk(id);
     }
     static async create(body) {

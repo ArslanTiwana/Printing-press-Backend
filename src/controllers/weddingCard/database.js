@@ -4,7 +4,7 @@ class dbLayer {
     static async getAll() {
         return await models.WeddingCard.findAll();
     }
-    static async getById() {
+    static async getById(id) {
         return await models.WeddingCard.findByPk(id);
     }
     static async create(body) {

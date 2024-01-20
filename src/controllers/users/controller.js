@@ -98,7 +98,7 @@ class UserController {
 
   static async search(req, res) {
     const keyword = req.query.search
-    const users = dbLayer.findUser(keyword)
+    const users =await dbLayer.findUser(keyword)
     res.send(users);
   }
 }

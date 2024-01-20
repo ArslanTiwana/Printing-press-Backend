@@ -2,15 +2,16 @@ const models = require("../../database/models");
 
 class dbLayer {
     static async getById(id) {
-        return await models.Order.findOne(id);
+        return await models.Order.findByPk(id);
     }
-    static async getAll(id) {
+    static async getAll() {
         return await models.Order.findAll();
     }
     static async getByClient(clientId) {
+        console.log(clientId)
         return await models.Order.findAll({
             where:{
-                clientId
+                clientId:clientId
             }
         });
     }

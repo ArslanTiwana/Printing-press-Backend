@@ -5,9 +5,9 @@ const dbLayer = require('./database')
 class WeddingCardController {
   static async getAll(req, res) {
     try {
-      const result = dbLayer.getAll()
+      const result =await dbLayer.getAll()
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)
@@ -16,9 +16,11 @@ class WeddingCardController {
   }
   static async getById(req, res) {
     try {
-      const result = dbLayer.getById(id)
+      const {id}=req.params
+
+      const result =await dbLayer.getById(id)
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)

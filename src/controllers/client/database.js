@@ -8,7 +8,7 @@ class dbLayer {
         return await models.Client.create(body);
     }
     static async update(id,body) {
-        return await models.Client.update(id,body);
+        return await models.Client.update(body,{where:{id:id}});
     }
     static async findbyid(clientId) {
         return await models.Client.findAll({

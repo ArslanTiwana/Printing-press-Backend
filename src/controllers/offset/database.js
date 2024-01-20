@@ -4,7 +4,7 @@ class dbLayer {
     static async getAll() {
         return await models.Offset.findAll();
     }
-    static async getById() {
+    static async getById(id) {
         return await models.Offset.findByPk(id);
     }
     static async create(body) {

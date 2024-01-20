@@ -5,9 +5,9 @@ class panaflexController {
 
   static async getAll(req, res) {
     try {
-      const result = dbLayer.getAll()
+      const result =await dbLayer.getAll()
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)
@@ -15,10 +15,11 @@ class panaflexController {
     }
   }
   static async getById(req, res) {
-    try {
-      const result = dbLayer.getById(id)
+    try {      
+      const {id}=req.params
+      const result =await dbLayer.getById(id)
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)

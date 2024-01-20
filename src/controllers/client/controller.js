@@ -6,6 +6,10 @@ class ClientController {
   static async create(req, res) {
     try {
       const body = req.body
+      const existingClient=await dbLayer.getByPhoneNumber(body.phoneNumber)
+      if(existingClient){
+        return res.json(errorResponse(401, "Client with this Phone Number Already Exist"));
+      }
       const client = await dbLayer.create(body)
       if (client) {
         return res.json(successResponse(201, "Client created successfully", client));
@@ -20,7 +24,7 @@ class ClientController {
 
   static async update(req, res) {
     const body = req.body
-    const id=req.params
+    const {id}=req.params
     try {
       const result = await dbLayer.findbyid(id);
       if (result) {
@@ -37,14 +41,14 @@ class ClientController {
 
   static async search(req, res) {
     const keyword = req.query.search
-    const result = dbLayer.search(keyword)
+    const result =await dbLayer.search(keyword)
     res.send(result);
   }
   static async getAll(req, res) {
     try {
-      const result = dbLayer.getAll()
+      const result =await dbLayer.getAll()
       if (result) {
-        return res.json(successResponse(200, "Successfull",{result}));
+        return res.json(successResponse(200, "Successfull",result));
       }
     } catch (error) {
       console.log(error)
