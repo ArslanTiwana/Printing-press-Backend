@@ -4,6 +4,9 @@ class dbLayer {
     static async getById(id) {
         return await models.Order.findOne(id);
     }
+    static async getAll(id) {
+        return await models.Order.findAll();
+    }
     static async getByClient(clientId) {
         return await models.Order.findAll({
             where:{

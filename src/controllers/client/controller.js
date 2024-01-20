@@ -50,7 +50,6 @@ class ClientController {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
     }
-    res.send(users);
   }
 }
 

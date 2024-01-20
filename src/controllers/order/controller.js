@@ -63,17 +63,41 @@ class UserController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
-
+  static async getAll(req, res) {
+    try {
+      const result = dbLayer.getAll()
+      if (result) {
+        return res.json(successResponse(200, "Successfull",{result}));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async getById(req, res) {
     const id= req.params;
-    const users = dbLayer.getById(id)
-    res.send(users);
+    try {
+      const result = dbLayer.getById(id)
+      if (result) {
+        return res.json(successResponse(200, "Successfull",{result}));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
   }
 
   static async getByClient(req, res) {
     const id= req.params;
-    const users = dbLayer.getByClient(id)
-    res.send(users);
+    try {
+      const result = dbLayer.getByClient(id)
+      if (result) {
+        return res.json(successResponse(200, "Successfull",{result}));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
   }
 }
 
