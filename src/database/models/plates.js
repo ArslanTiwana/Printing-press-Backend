@@ -1,0 +1,50 @@
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Plates extends Model {
+
+    static associate(models) {
+      models.Order.hasMany(models.Plates, {
+        foreignKey: "orderId",
+      });
+      models.User.hasMany(models.Plates, {
+        foreignKey: "completedBy",
+      });
+    }
+  }
+  Plates.init(
+    {
+      quantity: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      color: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      size: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      rate: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue:"pending" 
+      },
+    },
+    {
+      sequelize,
+      modelName: "Plates",
+      tableName: "Plates",
+    },
+  );
+  return Plates;
+};
