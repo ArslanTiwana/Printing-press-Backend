@@ -31,12 +31,18 @@ class UserController {
     try {
       const body = req.body
       body.password = await Service.hashedPassword(body.password)
+      const existingUser=await dbLayer.getbyUsername(body.username)
+      if(!existingUser){
       const user = await dbLayer.createUser(body)
       if (user) {
         return res.json(successResponse(201, "User created successfully", user));
       } else {
         return res.json(errorResponse(401, "User not created"));
       }
+    }
+    else {
+      return res.json(errorResponse(401, "User with this User Name already Exist"));
+    }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
