@@ -24,7 +24,7 @@ class dbLayer {
         });
     }
     static async search(keyword) {
-        return await models.User.findAll({
+        return await models.ColorPrint.findAll({
             where: {
                 name: keyword,
             },

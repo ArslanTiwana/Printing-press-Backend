@@ -5,7 +5,7 @@ class dbLayer {
         return await models.Panaflex.findAll();
     }
     static async getById() {
-        return await models.ColorPrint.findByPk(id);
+        return await models.Panaflex.findByPk(id);
     }
     static async create(body) {
         return await models.Panaflex.create(body);
@@ -24,7 +24,7 @@ class dbLayer {
         });
     }
     static async search(keyword) {
-        return await models.User.findAll({
+        return await models.Panaflex.findAll({
             where: {
                 name: keyword,
             },

@@ -26,7 +26,7 @@ class dbLayer {
     }
     
     static async search(keyword) {
-        return await models.User.findAll({
+        return await models.Client.findAll({
             where: {
                 name: keyword,
             },

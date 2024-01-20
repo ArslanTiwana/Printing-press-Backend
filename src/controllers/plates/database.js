@@ -5,7 +5,7 @@ class dbLayer {
         return await models.Plates.findAll();
     }
     static async getById() {
-        return await models.ColorPrint.findByPk(id);
+        return await models.Plates.findByPk(id);
     }
     static async create(body) {
         return await models.Plates.create(body);
@@ -24,7 +24,7 @@ class dbLayer {
         });
     }
     static async search(keyword) {
-        return await models.User.findAll({
+        return await models.Plates.findAll({
             where: {
                 name: keyword,
             },
