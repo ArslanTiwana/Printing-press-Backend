@@ -31,6 +31,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      status:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue:"active"
+      },
       verificationCode: {
         type: DataTypes.INTEGER,
         allowNull: true,
