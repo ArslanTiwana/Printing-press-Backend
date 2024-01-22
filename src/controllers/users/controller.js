@@ -50,6 +50,53 @@ class UserController {
     }
   }
 
+  static async getAll(req, res) {
+    try {
+        const users = await dbLayer.getAll()
+        if (users) {
+            return res.json(successResponse(200, "Successfull", users));
+          } 
+        else {
+          return res.json(errorResponse(404, "User Not Found"));
+        }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+
+  static async getById(req, res) {
+    try {
+      const {id}=req.params
+        const users = await dbLayer.getById(id)
+        if (users) {
+            return res.json(successResponse(200, "Successfull", users));
+          } 
+        else {
+          return res.json(errorResponse(404, "User Not Found"));
+        }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+  static async update(req, res) {
+    try {
+      const {id}=req.params
+      const body=req.body
+        const users = await dbLayer.getById(id)
+        if (users) {
+            const updatedUser=await dbLayer.update(id,body)
+            return res.json(successResponse(200, "Successfull",updatedUser ));
+          } 
+        else {
+          return res.json(errorResponse(404, "User Not Found"));
+        }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async forgetPassword(req, res) {
     const { email } = req.body
     const verificationCode = Math.floor(1000 + Math.random() * 9000);
