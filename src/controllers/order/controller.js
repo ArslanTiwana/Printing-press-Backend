@@ -100,6 +100,23 @@ class UserController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async delete(req, res) {
+    try {
+      const {id}=req.params
+      
+        const result = await dbLayer.getById(id)
+        if (result) {
+            await dbLayer.delete(id)
+            return res.json(successResponse(200, "Successfull", users));
+          } 
+        else {
+          return res.json(errorResponse(404, " Not Found"));
+        }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
 }
 
 module.exports = UserController;

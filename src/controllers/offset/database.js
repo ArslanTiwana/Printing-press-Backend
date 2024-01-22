@@ -16,6 +16,9 @@ class dbLayer {
     static async update(id,body) {
         return await models.Offset.update(id,body);
     }
+    static async delete(id) {
+        return await models.Client.destroy({where:{id:id}});
+    }
     static async findbyid(id) {
         return await models.Offset.findAll({
             where: {

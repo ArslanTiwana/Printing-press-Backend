@@ -7,6 +7,7 @@ router.put("/update/:id",Authorization,ClientController.update);
 router.get("/get",Authorization,ClientController.getAll);
 router.get("/get/:id",Authorization,ClientController.getById);
 router.get("/search",Authorization,ClientController.search);
+router.delete("/:id",Authorization,ClientController.delete);
 
 
 module.exports = router;

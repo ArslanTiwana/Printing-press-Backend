@@ -8,12 +8,23 @@ class dbLayer {
         return await models.Order.findAll();
     }
     static async getByClient(clientId) {
-        console.log(clientId)
         return await models.Order.findAll({
             where:{
                 clientId:clientId
             }
+            ,
+        include: [
+            { model: models.Plates },
+            { model: models.ColorPrint },
+            { model: models.WeddingCard },
+            { model: models.Panaflex },
+            { model: models.Film },
+            { model: models.Offset },
+        ]
         });
+    }
+    static async delete(id) {
+        return await models.Order.destroy({where:{id:id}});
     }
     static async create(body) {
         return await models.Order.create(body);

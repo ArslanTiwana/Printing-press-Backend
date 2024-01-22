@@ -16,6 +16,9 @@ class dbLayer {
     static async createBulk(body) {
         return await models.Film.bulkCreate(body);
     }
+    static async delete(id) {
+        return await models.Film.destroy({where:{id:id}});
+    }
     static async findbyid(id) {
         return await models.Film.findAll({
             where: {
