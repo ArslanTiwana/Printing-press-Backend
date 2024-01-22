@@ -64,7 +64,7 @@ class WeddingCardController {
         const result = await dbLayer.getById(id)
         if (result) {
             await dbLayer.delete(id)
-            return res.json(successResponse(200, "Successfull", users));
+            return res.json(successResponse(200, "Successfull", result));
           } 
         else {
           return res.json(errorResponse(404, " Not Found"));

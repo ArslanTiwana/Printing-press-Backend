@@ -16,13 +16,7 @@ class dbLayer {
     static async delete(id) {
         return await models.Client.destroy({where:{id:id}});
     }
-    static async findbyid(clientId) {
-        return await models.Client.findAll({
-            where: {
-                id: clientId,
-            },
-        });
-    }
+ 
     static async getByPhoneNumber(phoneNumber) {
         return await models.Client.findOne({
             where: {

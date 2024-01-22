@@ -27,8 +27,9 @@ class ClientController {
     const {id}=req.params
     try {
       
-      const result1 = await dbLayer.findbyid(id);
+      const result1 = await dbLayer.getById(id);
       if (result1) {
+        console.log(body.phoneNumber)
         if(body.phoneNumber){
           const result=await dbLayer.getByPhoneNumber(body.phoneNumber)
           if(result && result.id!=result1.id){
@@ -81,7 +82,7 @@ class ClientController {
         const result = await dbLayer.getById(id)
         if (result) {
             await dbLayer.delete(id)
-            return res.json(successResponse(200, "Successfull", users));
+            return res.json(successResponse(200, "Successfull", result));
           } 
         else {
           return res.json(errorResponse(404, " Not Found"));
