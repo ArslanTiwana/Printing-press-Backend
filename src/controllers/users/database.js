@@ -21,6 +21,7 @@ class dbLayer {
     static async update(id,body) {
         return await models.User.update(body,{where:{id:id}});
     }
+    
     static async updateStatus(id,status) {
         return await models.User.update({status:status},{where:{id:id}});
     }
