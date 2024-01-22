@@ -4,7 +4,7 @@ const router = require("./routes");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-app.use(cors({origin:["http://localhost:3000","http://43.204.140.22:3000"],credentials:true}));
+app.use(cors());
 
 // Parsers to parse the Applications
 app.use(bodyParser.urlencoded({ extended: false }));
