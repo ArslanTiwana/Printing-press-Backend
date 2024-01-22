@@ -12,6 +12,9 @@ class dbLayer {
     static async createUser(body) {
         return await models.User.create(body);
     }
+    static async delete(id) {
+        return await models.User.destroy({where:{id:id}});
+    }
     static async getAll() {
         return await models.User.findAll();
     }
@@ -21,7 +24,7 @@ class dbLayer {
     static async update(id,body) {
         return await models.User.update(body,{where:{id:id}});
     }
-    
+
     static async updateStatus(id,status) {
         return await models.User.update({status:status},{where:{id:id}});
     }

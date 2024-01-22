@@ -26,8 +26,15 @@ class ClientController {
     const body = req.body
     const {id}=req.params
     try {
-      const result = await dbLayer.findbyid(id);
-      if (result) {
+      
+      const result1 = await dbLayer.findbyid(id);
+      if (result1) {
+        if(body.phoneNumber){
+          const result=await dbLayer.getByPhoneNumber(body.phoneNumber)
+          if(result && result.id!=result1.id){
+            return res.json(errorResponse(404, "Phone Number You are Using is Already Used By another Client"));
+          }
+        }
         await dbLayer.update(id,body);
         return res.json(successResponse(200, "Successfull"));
       } else {
@@ -47,6 +54,18 @@ class ClientController {
   static async getAll(req, res) {
     try {
       const result =await dbLayer.getAll()
+      if (result) {
+        return res.json(successResponse(200, "Successfull",result));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+  static async getById(req, res) {
+    try {
+      const {id}=req.params
+      const result =await dbLayer.getById(id)
       if (result) {
         return res.json(successResponse(200, "Successfull",result));
       }

@@ -4,6 +4,9 @@ class dbLayer {
     static async getAll() {
         return await models.Client.findAll();
     }
+    static async getById(id) {
+        return await models.Client.findByPk(id);
+    }
     static async create(body) {
         return await models.Client.create(body);
     }
@@ -23,8 +26,7 @@ class dbLayer {
                 phoneNumber: phoneNumber,
             },
         });
-    }
-    
+    }   
     static async search(keyword) {
         return await models.Client.findAll({
             where: {

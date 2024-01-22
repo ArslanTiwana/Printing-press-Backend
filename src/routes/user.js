@@ -6,6 +6,7 @@ router.post("/register",userController.register);
 router.post("/forgetpassword",userController.forgetPassword);
 router.put("/update/:id",userController.update);
 router.get("/get",userController.getAll);
+router.delete("/:id",userController.delete);
 router.get("/get/:id",userController.getById);
 router.post("/resetpassword",userController.resetPassword);
 router.post("/login", userController.login);

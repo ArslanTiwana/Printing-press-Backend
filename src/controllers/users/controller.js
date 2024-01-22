@@ -14,6 +14,9 @@ class UserController {
       if (!userInfo) {
         return res.json(errorResponse(404, "No User Exist with These Credentials"));
       }
+      if (userInfo.status!='active') {
+        return res.json(errorResponse(401, "User is In Active"));
+      }
       const passwordMatch = await bcrypt.compare(password, userInfo.password);
       if (!passwordMatch) {
         return res.json(errorResponse(500, "Invalid Password"));
@@ -64,6 +67,23 @@ class UserController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async delete(req, res) {
+    try {
+      const {id}=req.params
+      
+        const users = await dbLayer.getById(id)
+        if (users) {
+            const result=await dbLayer.delete(id)
+            return res.json(successResponse(200, "Successfull", users));
+          } 
+        else {
+          return res.json(errorResponse(404, "User Not Found"));
+        }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
 
   static async getById(req, res) {
     try {
@@ -86,8 +106,14 @@ class UserController {
       const body=req.body
         const users = await dbLayer.getById(id)
         if (users) {
+          if(body.email){
+          const result=await dbLayer.getbyEmail(body.email)
+          if(result && result.id!=users.id){
+            return res.json(errorResponse(404, "Email You are Using is Already Used By another User"));
+          }
+        }         
             const updatedUser=await dbLayer.update(id,body)
-            return res.json(successResponse(200, "Successfull",updatedUser ));
+            return res.json(successResponse(200, "Successfull",updatedUser ));          
           } 
         else {
           return res.json(errorResponse(404, "User Not Found"));

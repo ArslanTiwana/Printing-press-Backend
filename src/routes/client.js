@@ -5,6 +5,7 @@ const {Authorization}=require('../middlewares/jwt')
 router.post("/create",Authorization,ClientController.create);
 router.put("/update/:id",Authorization,ClientController.update);
 router.get("/get",Authorization,ClientController.getAll);
+router.get("/get/:id",Authorization,ClientController.getById);
 router.get("/search",Authorization,ClientController.search);
 
 
