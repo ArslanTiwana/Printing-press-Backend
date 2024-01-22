@@ -4,6 +4,22 @@ class dbLayer {
     static async getById(id) {
         return await models.Order.findByPk(id);
     }
+    static async getDetailsById(id) {
+        return await models.Order.findOne({
+            where:{
+                id:id
+            }
+            ,
+        include: [
+            { model: models.Plates },
+            { model: models.ColorPrint },
+            { model: models.WeddingCard },
+            { model: models.Panaflex },
+            { model: models.Film },
+            { model: models.Offset },
+        ]
+        });
+    }
     static async getAll() {
         return await models.Order.findAll();
     }

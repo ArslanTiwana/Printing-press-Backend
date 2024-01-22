@@ -78,7 +78,7 @@ class UserController {
   static async getById(req, res) {
     const {id}= req.params;
     try {
-      const result = await dbLayer.getById(id)
+      const result = await dbLayer.getDetailsById(id)
       if (result) {
         return res.json(successResponse(200, "Successfull",result));
       }
