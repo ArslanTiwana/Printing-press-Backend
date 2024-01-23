@@ -21,8 +21,15 @@ class dbLayer {
         });
     }
     static async getAll() {
-        return await models.Order.findAll();
+        return await models.Order.findAll({
+            include: [
+                { model: models.Client },
+                { model: models.Invoice },
+            ]
+        }
+        );
     }
+    
     static async getByClient(clientId) {
         return await models.Order.findAll({
             where:{

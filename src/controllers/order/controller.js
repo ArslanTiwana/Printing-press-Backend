@@ -68,7 +68,17 @@ class UserController {
       const result = await dbLayer.getAll()
       console.log(result)
       if (result) {
-        return res.json(successResponse(200, "Successfull",result));
+        const filteredArray = result.map((item) => {
+          return {
+            name:item.Client?.name,
+            email:item.Client?.email,
+            phoneNumber:item.Client?.phoneNumber, 
+            id:item.id,
+            status:item.status,
+            invoices:item.Invoices
+          };
+        });
+        return res.json(successResponse(200, "Successfull",filteredArray));
       }
     } catch (error) {
       console.log(error)

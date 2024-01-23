@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.Order.hasMany(models.Panaflex, {
         foreignKey: "orderId",
+        onDelete: 'CASCADE'
       });
       models.User.hasMany(models.Panaflex, {
         foreignKey: "completedBy",
