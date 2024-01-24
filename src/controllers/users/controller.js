@@ -21,8 +21,9 @@ class UserController {
       if (!passwordMatch) {
         return res.json(errorResponse(500, "Invalid Password"));
       }
+      const responseBody={user:userInfo,token:createAccessToken(userInfo)}
       // res.header('Authorization', createAccessToken(userInfo));
-      return res.json(successResponse(200, "Authentication successful", createAccessToken(userInfo)));
+      return res.json(successResponse(200, "Authentication successful", responseBody));
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
