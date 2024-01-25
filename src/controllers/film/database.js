@@ -11,7 +11,7 @@ class dbLayer {
         return await models.Film.create(body);
     }
     static async update(id,body) {
-        return await models.Film.update(id,body);
+        return await models.Film.update(body,{where:{id:id}});
     }
     static async createBulk(body) {
         return await models.Film.bulkCreate(body);

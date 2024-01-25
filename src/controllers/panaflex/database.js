@@ -14,7 +14,7 @@ class dbLayer {
         return await models.Panaflex.bulkCreate(body);
     }
     static async update(id,body) {
-        return await models.Panaflex.update(id,body);
+        return await models.Panaflex.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.Panaflex.destroy({where:{id:id}});

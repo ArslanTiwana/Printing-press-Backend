@@ -14,7 +14,7 @@ class dbLayer {
         return await models.ColorPrint.bulkCreate(body);
     }
     static async update(id,body) {
-        return await models.ColorPrint.update(id,body);
+        return await models.ColorPrint.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.ColorPrint.destroy({where:{id:id}});

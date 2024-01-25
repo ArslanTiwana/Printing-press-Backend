@@ -14,7 +14,7 @@ class dbLayer {
         return await models.WeddingCard.bulkCreate(body);
     }   
     static async update(id,body) {
-        return await models.WeddingCard.update(id,body);
+        return await models.WeddingCard.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.WeddingCard.destroy({where:{id:id}});

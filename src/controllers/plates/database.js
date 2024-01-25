@@ -14,7 +14,7 @@ class dbLayer {
         return await models.Plates.bulkCreate(body);
     }
     static async update(id,body) {
-        return await models.Plates.update(id,body);
+        return await models.Plates.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.Plates.destroy({where:{id:id}});

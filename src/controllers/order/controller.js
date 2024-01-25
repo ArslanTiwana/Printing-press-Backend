@@ -63,6 +63,24 @@ class UserController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async update(req, res) {
+    try {
+      const {id}=req.params
+      const body=req.body
+      const resp=await dbLayer.getById(id)
+      if(resp){
+      const result =await dbLayer.update(id,body)
+      if (result) {
+        return res.json(successResponse(200, "Successfull",result));
+      }
+    }else{
+      return res.json(errorResponse(404, "Not Found"));
+    }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async getAll(req, res) {
     try {
       const result = await dbLayer.getAll()

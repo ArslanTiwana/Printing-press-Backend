@@ -18,8 +18,8 @@ class PlatesController {
     try {
       const {id}=req.params
       const body=req.body
-      const res=await dbLayer.getById(id)
-      if(!res){
+      const resp=await dbLayer.getById(id)
+      if(resp){
       const result =await dbLayer.update(id,body)
       if (result) {
         return res.json(successResponse(200, "Successfull",result));

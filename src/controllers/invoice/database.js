@@ -2,32 +2,30 @@ const models = require("../../database/models");
 
 class dbLayer {
     static async getAll() {
-        return await models.Offset.findAll();
+        return await models.Client.findAll();
     }
     static async getById(id) {
-        return await models.Offset.findByPk(id);
+        return await models.Client.findByPk(id);
     }
     static async create(body) {
-        return await models.Offset.create(body,{where:{id:id}});
-    }
-    static async createBulk(body) {
-        return await models.Offset.bulkCreate(body);
+        return await models.Client.create(body);
     }
     static async update(id,body) {
-        return await models.Offset.update(id,body);
+        return await models.Client.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.Client.destroy({where:{id:id}});
     }
-    static async findbyid(id) {
-        return await models.Offset.findAll({
+ 
+    static async getByPhoneNumber(phoneNumber) {
+        return await models.Client.findOne({
             where: {
-                id: id,
+                phoneNumber: phoneNumber,
             },
         });
-    }
+    }   
     static async search(keyword) {
-        return await models.Offset.findAll({
+        return await models.Client.findAll({
             where: {
                 name: keyword,
             },

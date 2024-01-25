@@ -4,6 +4,9 @@ class dbLayer {
     static async getById(id) {
         return await models.Order.findByPk(id);
     }
+    static async update(id,body) {
+        return await models.Order.update(body,{where:{id:id}});
+    }
     static async getDetailsById(id) {
         return await models.Order.findOne({
             where:{
