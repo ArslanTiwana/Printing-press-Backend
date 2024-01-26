@@ -27,6 +27,19 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue:"pending"
       },
+      completeInvoiceCreated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue:false
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
       createdOn:{
         type:DataTypes.BIGINT,
         allowNull:false,

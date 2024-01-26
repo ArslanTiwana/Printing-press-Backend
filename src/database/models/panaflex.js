@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Panaflex, {
         foreignKey: "completedBy",
       });
+      models.Invoice.hasMany(models.Panaflex, {
+        foreignKey: "invoiceId",
+      });
+      models.Panaflex.belongsTo(models.Invoice, {
+        foreignKey: "invoiceId",
+      });
     }
   }
   Panaflex.init(
@@ -55,6 +61,14 @@ module.exports = (sequelize, DataTypes) => {
       rate: {
         type: DataTypes.BIGINT,
         allowNull: true, 
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
       },
       status: {
         type: DataTypes.STRING,

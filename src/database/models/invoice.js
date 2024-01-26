@@ -18,14 +18,30 @@ module.exports = (sequelize, DataTypes) => {
   }
   Invoice.init(
     {
-      DeliveryDate: {
-        type: DataTypes.BIGINT,
-        allowNull: true,
-      },
       status: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue:"pending"
+      },
+      tax: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      extra: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      subtotal: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      discount: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      total: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
       createdOn:{
         type:DataTypes.BIGINT,

@@ -1,20 +1,46 @@
 const { successResponse, errorResponse } = require("../../utils/response/response")
 const dbLayer = require("./database");
-
+const models = require("../../database/models");
+const db=require("../../database/models");
+const order = require("../../database/models/order");
 class InvoiceController {
 
   static async create(req, res) {
+    const transaction = await db.sequelize.transaction();
     try {
       const body = req.body
-      const resp = await dbLayer.create(body)
-      if (resp) {
-        // do more thing
-        return res.json(successResponse(201, "invoice created successfully", resp));
-      } else {
-        return res.json(errorResponse(401, "Client not created"));
-      }
+      const {items,invoice}=body
+      console.log(invoice)
+      if(invoice){
+        const updateOrder=await models.Order.update({completeInvoiceCreated:invoice.completedOrder},{ where: { id: invoice.orderId}} , {transaction })
+        const createdInvoice = await models.Invoice.create({...invoice,createdBy:req.user.id}, { transaction });
+      
+      const platesArray = items.filter(item => (item.type === 'Plate'));
+      const colorPrintsArray = items.filter(item => (item.type === 'Color Print'));
+      const weddingCardsArray = items.filter(item => (item.type === 'Wedding Card'));
+      const panaflexesArray = items.filter(item => (item.type === 'Panaflex'));
+      const filmsArray = items.filter(item => (item.type === 'Film'))
+      const offsetsArray = items.filter(item => (item.type === 'Offset') );
+      console.log(createdInvoice)
+      await Promise.all([
+        ...platesArray.map(item => models.Plates.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+        ...colorPrintsArray.map(item => models.ColorPrint.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+        ...weddingCardsArray.map(item => models.WeddingCard.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+        ...panaflexesArray.map(item => models.Panaflex.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+        ...filmsArray.map(item => models.Film.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+        ...offsetsArray.map(item => models.Offset.update({ ...item, invoiceId: createdInvoice.id }, { where: { id: item.id }, transaction })),
+      ]);
+      await transaction.commit();
+      console.log('Transaction committed successfully');
+        return res.json(successResponse(201, "invoice created successfully", createdInvoice));
+    }
+    else{
+      return res.json(errorResponse(404, "No Data Found"));
+
+    }
     } catch (error) {
       console.log(error)
+      await transaction.rollback();
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }

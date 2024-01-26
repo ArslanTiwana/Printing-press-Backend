@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Film, {
         foreignKey: "completedBy",
       });
+      models.Invoice.hasMany(models.Film, {
+        foreignKey: "invoiceId",
+      });
+      models.Film.belongsTo(models.Invoice, {
+        foreignKey: "invoiceId",
+      });
     }
   }
   Film.init(
@@ -31,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       sizeY: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
+        type: DataTypes.BIGINT,
         allowNull: true,
       },
       description: {

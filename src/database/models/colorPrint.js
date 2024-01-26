@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "orderId",
         onDelete: 'CASCADE',
       });
+      models.Invoice.hasMany(models.ColorPrint, {
+        foreignKey: "invoiceId",
+      });
+      models.ColorPrint.belongsTo(models.Invoice, {
+        foreignKey: "invoiceId",
+      });
       models.User.hasMany(models.ColorPrint, {
         foreignKey: "completedBy",
       });
@@ -33,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       rate: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
         type: DataTypes.BIGINT,
         allowNull: true,
       },

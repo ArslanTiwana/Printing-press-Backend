@@ -9,5 +9,6 @@ router.use("/order", require("./order"));
 router.use("/panaflex", require("./panaflex"));
 router.use("/plates", require("./plates"));
 router.use("/weddingcard", require("./weddingCard"));
+router.use("/invoice", require("./invoice"));
 
 module.exports = router;

@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Offset, {
         foreignKey: "completedBy",
       });
+      models.Invoice.hasMany(models.Offset, {
+        foreignKey: "invoiceId",
+      });
+      models.Offset.belongsTo(models.Invoice, {
+        foreignKey: "invoiceId",
+      });
       // models.Firm.hasMany(models.WeddingCard, {
       //   foreignKey: "firm_id",
       // });
@@ -78,6 +84,14 @@ module.exports = (sequelize, DataTypes) => {
       rate: {
         type: DataTypes.BIGINT,
         allowNull: true, 
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
       },
       status: {
         type: DataTypes.STRING,

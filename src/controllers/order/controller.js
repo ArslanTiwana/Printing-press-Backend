@@ -116,6 +116,24 @@ class UserController {
     }
   }
 
+  static async getInvoiceOrderItemsById(req, res) {
+    const {id}= req.params;
+    try {
+      const result = await dbLayer.getInvoiceOrderItemsById(id)
+      if (result) {
+
+        return res.json(successResponse(200, "Successfull",result));
+      }
+      else{
+        return res.json(errorResponse(404, "Not Found"));
+
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+
   static async getByClient(req, res) {
     const {id}= req.params;
     try {

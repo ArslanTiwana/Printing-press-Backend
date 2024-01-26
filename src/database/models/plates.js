@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Plates, {
         foreignKey: "completedBy",
       });
+      models.Invoice.hasMany(models.Plates, {
+        foreignKey: "invoiceId",
+      });
+      models.Plates.belongsTo(models.Invoice, {
+        foreignKey: "invoiceId",
+      });
     }
   }
   Plates.init(
@@ -33,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       rate: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      discount: {
+        type: DataTypes.BIGINT,
+        allowNull: true,
+      },
+      extra: {
         type: DataTypes.BIGINT,
         allowNull: true,
       },
