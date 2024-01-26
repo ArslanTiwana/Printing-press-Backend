@@ -56,9 +56,6 @@ class dbLayer {
         if (!order) {
             return null; 
         }
-        const ResponseArray=[]
-        ResponseArray.push(order.Plates.map((plate=>plate)))
-        ResponseArray.push(order.WeddingCards.map((plate=>plate)))
         const resultArray = [
             ...(order.Plates ? order.Plates.map(plate => ({ ...plate.get(), type: 'Plate', uniqueId: generateUniqueId() })) : []),
             ...(order.ColorPrints ? order.ColorPrints.map(colorPrint => ({ ...colorPrint.get(), type: 'Color Print', uniqueId: generateUniqueId() })) : []),
