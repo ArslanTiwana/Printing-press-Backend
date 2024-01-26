@@ -6,7 +6,10 @@ class dbLayer {
     }
     static async getAllForScrumBoard() {
         const data= await models.Plates.findAll();
-        const response=data.map(item=>{item.id=(item.id).toString(); return item})
+        const response = data.map(item => {
+            const updatedItem = { ...item.get({ plain: true }), id: item.id.toString() };
+            return updatedItem;
+        });        
         return response
     }
     static async getById(id) {
