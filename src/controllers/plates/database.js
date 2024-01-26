@@ -4,6 +4,11 @@ class dbLayer {
     static async getAll() {
         return await models.Plates.findAll();
     }
+    static async getAllForScrumBoard() {
+        const data= await models.Plates.findAll();
+        const response=data.map(item=>({...item,id:(item.id).toString()}))
+        return response
+    }
     static async getById(id) {
         return await models.Plates.findByPk(id);
     }

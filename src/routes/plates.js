@@ -3,6 +3,7 @@ const PlatesController=require('../controllers/plates/controller')
 const {Authorization}=require('../middlewares/jwt')
 
 router.get("/get",Authorization,PlatesController.getAll);
+router.get("/get_all",Authorization,PlatesController.getAllForScrumBoard);
 router.get("/get/:id",Authorization,PlatesController.getById);
 router.post("/create",Authorization,PlatesController.create);
 router.put("/update/:id",Authorization,PlatesController.update);
