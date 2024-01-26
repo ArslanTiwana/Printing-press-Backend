@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   ColorPrint.init(
     {
       quantity: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       paperType: {
@@ -39,15 +39,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       rate: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       discount: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       extra: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       status: {

@@ -121,7 +121,7 @@ class UserController {
     try {
       const result = await dbLayer.getInvoiceOrderItemsById(id)
       if (result) {
-
+        console.log(result)
         return res.json(successResponse(200, "Successfull",result));
       }
       else{

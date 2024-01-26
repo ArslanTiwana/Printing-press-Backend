@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   Plates.init(
     {
       quantity: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       color: {
@@ -39,15 +39,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       rate: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       discount: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       extra: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       status: {

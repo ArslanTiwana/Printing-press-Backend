@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   Panaflex.init(
     {
       quantity: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       sizeX: {
@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       ringQuantity: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       description: {
@@ -59,15 +59,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       rate: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true, 
       },
       discount: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       extra: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       status: {

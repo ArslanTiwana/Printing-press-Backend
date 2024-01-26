@@ -60,12 +60,12 @@ class dbLayer {
         ResponseArray.push(order.Plates.map((plate=>plate)))
         ResponseArray.push(order.WeddingCards.map((plate=>plate)))
         const resultArray = [
-            ...(order.Plates ? order.Plates.map(plate => ({ ...plate.get({ plain: true }), type: 'Plate', uniqueId: generateUniqueId() })) : []),
-            ...(order.ColorPrints ? order.ColorPrints.map(colorPrint => ({ ...colorPrint.get({ plain: true }), type: 'Color Print', uniqueId: generateUniqueId() })) : []),
-            ...(order.WeddingCards ? order.WeddingCards.map(weddingCard => ({ ...weddingCard.get({ plain: true }), type: 'Wedding Card', uniqueId: generateUniqueId() })) : []),
-            ...(order.Panaflexes ? order.Panaflexes.map(panaflex => ({ ...panaflex.get({ plain: true }), type: 'Panaflex', uniqueId: generateUniqueId() })) : []),
-            ...(order.Films ? order.Films.map(film => ({ ...film.get({ plain: true }), type: 'Film', uniqueId: generateUniqueId() })) : []),
-            ...(order.Offsets ? order.Offsets.map(offset => ({ ...offset.get({ plain: true }), type: 'Offset', uniqueId: generateUniqueId() })) : []),
+            ...(order.Plates ? order.Plates.map(plate => ({ ...plate.get(), type: 'Plate', uniqueId: generateUniqueId() })) : []),
+            ...(order.ColorPrints ? order.ColorPrints.map(colorPrint => ({ ...colorPrint.get(), type: 'Color Print', uniqueId: generateUniqueId() })) : []),
+            ...(order.WeddingCards ? order.WeddingCards.map(weddingCard => ({ ...weddingCard.get(), type: 'Wedding Card', uniqueId: generateUniqueId() })) : []),
+            ...(order.Panaflexes ? order.Panaflexes.map(panaflex => ({ ...panaflex.get(), type: 'Panaflex', uniqueId: generateUniqueId() })) : []),
+            ...(order.Films ? order.Films.map(film => ({ ...film.get(), type: 'Film', uniqueId: generateUniqueId() })) : []),
+            ...(order.Offsets ? order.Offsets.map(offset => ({ ...offset.get(), type: 'Offset', uniqueId: generateUniqueId() })) : []),
         ];
         return resultArray
     }

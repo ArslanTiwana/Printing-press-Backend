@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue:false
       },
       discount: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       extra: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
       createdOn:{
