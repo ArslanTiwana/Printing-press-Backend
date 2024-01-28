@@ -5,8 +5,8 @@ const moment =require('moment')
 module.exports = (sequelize, DataTypes) => {
   class Panaflex extends Model {
     static associate(models) {
-      models.Order.hasMany(models.Panaflex, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.Panaflex, {
+        foreignKey: "jobCardId",
         onDelete: 'CASCADE'
       });
       models.User.hasMany(models.Panaflex, {

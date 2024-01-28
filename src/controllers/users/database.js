@@ -2,10 +2,17 @@ const models = require("../../database/models");
 
 class dbLayer {
 
-    static async getbyEmail(email) {
+    static async getbyUserName(userName) {
         return await models.User.findOne({
             where: {
-                email: email,
+                userName: userName,
+            },
+        });
+    }
+    static async getByUserType(type) {
+        return await models.User.findAll({
+            where: {
+                userType: type,
             },
         });
     }

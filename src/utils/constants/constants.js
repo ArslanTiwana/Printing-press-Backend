@@ -13,6 +13,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+const getRandomPassword = async ()=> {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const length = 8;
+  let randomStr = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomNum = Math.floor(Math.random() * characters.length);
+    randomStr += characters[randomNum];
+  }
+  return randomStr;
+};
+
 const sendForgetPasswordSMS = async (to, code) => {
     try {
       const message = await client.messages.create({
@@ -26,6 +38,23 @@ const sendForgetPasswordSMS = async (to, code) => {
       console.error(`Error sending SMS: ${error.message}`);
     }
   };
+  const newUserEmail = async (to,username,password) => {
+      try {
+        const mailOptions = {
+          from: process.env.SENDER_EMAIL,
+          to: to,
+          subject: 'New User Created',
+          text: `New User with following credentials is created:
+          Username: ${username}
+          Password: ${password}
+          `
+        };
+        await transporter.sendMail(mailOptions);
+        console.log('New User Creation email sent successfully');
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
+    }
 const sendVerificationSMS = async (to, code) => {
     try {
       const message = await client.messages.create({
@@ -87,4 +116,4 @@ const sendForgetPasswordEmail = async (toEmail, code) => {
     }
   };
 
-module.exports = { sendForgetPasswordEmail,sendVerificationEmail,sendForgetPasswordSMS,sendVerificationSMS };
+module.exports = { newUserEmail,getRandomPassword };

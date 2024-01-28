@@ -27,37 +27,37 @@ class UserController {
           return res.json(errorResponse(401, "Client with this Phone Number Already Exist"));
         }
       }
-      const order = await dbLayer.create({ expectedDeliveryDate, clientId, createdBy: req.user.id })
-      if (order) {
+      const jobCard = await dbLayer.create({ expectedDeliveryDate, clientId, createdBy: req.user.id })
+      if (jobCard) {
         if (plates.length != 0) {
-          const modifiedBody = Service.modifiedBody(plates, order.id)
+          const modifiedBody = Service.modifiedBody(plates, jobCard.id)
           console.log(modifiedBody)
           await platesLayer.createBulk(modifiedBody)
         }
         if (weddingCard.length != 0) {
-          const modifiedBody = Service.modifiedBody(weddingCard, order.id)
+          const modifiedBody = Service.modifiedBody(weddingCard, jobCard.id)
           await weddingCardLayer.createBulk(modifiedBody)
         }
         if (panaflex.length != 0) {
-          const modifiedBody = Service.modifiedBody(panaflex, order.id)
+          const modifiedBody = Service.modifiedBody(panaflex, jobCard.id)
           await panaflexLayer.createBulk(modifiedBody)
         }
         if (film.length != 0) {
-          const modifiedBody = Service.modifiedBody(film, order.id)
+          const modifiedBody = Service.modifiedBody(film, jobCard.id)
           await filmLayer.createBulk(modifiedBody)
         }
         if (offset.length != 0) {
-          const modifiedBody = Service.modifiedBody(offset, order.id)
+          const modifiedBody = Service.modifiedBody(offset, jobCard.id)
           await offsetLayer.createBulk(modifiedBody)
         }
         if (colorPrint.length != 0) {
-          const modifiedBody = Service.modifiedBody(colorPrint, order.id)
+          const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id)
           await colorPrintLayer.createBulk(modifiedBody)
         }
       } else {
-        return res.json(errorResponse(401, "Order Not created"));
+        return res.json(errorResponse(401, "JobCard Not created"));
       }
-      return res.json(successResponse(200, "Order Created Sucessfully", order));
+      return res.json(successResponse(200, "JobCard Created Sucessfully", jobCard));
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
@@ -116,10 +116,10 @@ class UserController {
     }
   }
 
-  static async getInvoiceOrderItemsById(req, res) {
+  static async getInvoicejobCardItemsById(req, res) {
     const {id}= req.params;
     try {
-      const result = await dbLayer.getInvoiceOrderItemsById(id)
+      const result = await dbLayer.getInvoicejobCardItemsById(id)
       if (result) {
         console.log(result)
         return res.json(successResponse(200, "Successfull",result));

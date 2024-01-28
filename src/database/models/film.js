@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class Film extends Model {
 
     static associate(models) {
-      models.Order.hasMany(models.Film, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.Film, {
+        foreignKey: "jobCardId",
         onDelete: 'CASCADE'
       });
       models.User.hasMany(models.Film, {

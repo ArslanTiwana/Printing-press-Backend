@@ -5,7 +5,7 @@ class ServiceLayer {
         const modifiedBody=body.map(item=>{
             return {
                 ...item,
-                orderId:id
+                jobCardId:id
             }
         })
         return modifiedBody

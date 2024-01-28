@@ -5,8 +5,8 @@ const moment =require('moment')
 module.exports = (sequelize, DataTypes) => {
   class Plates extends Model {
     static associate(models) {
-      models.Order.hasMany(models.Plates, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.Plates, {
+        foreignKey: "jobCardId",
         onDelete: 'CASCADE'
       });
       models.User.hasMany(models.Plates, {

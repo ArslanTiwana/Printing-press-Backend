@@ -8,13 +8,13 @@ class dbLayer {
   
     
     static async getById(id) {
-        return await models.Order.findByPk(id);
+        return await models.JobCard.findByPk(id);
     }
     static async update(id,body) {
-        return await models.Order.update(body,{where:{id:id}});
+        return await models.JobCard.update(body,{where:{id:id}});
     }
     static async getDetailsById(id) {
-        return await models.Order.findOne({
+        return await models.JobCard.findOne({
             where:{
                 id:id
             }
@@ -30,7 +30,7 @@ class dbLayer {
         });
     }
     static async getAll() {
-        return await models.Order.findAll({
+        return await models.JobCard.findAll({
             include: [
                 { model: models.Client },
                 { model: models.Invoice },
@@ -38,8 +38,8 @@ class dbLayer {
         }
         );
     }
-    static async getInvoiceOrderItemsById(id) {
-        const order= await models.Order.findOne({
+    static async getInvoicejobCardItemsById(id) {
+        const jobCard= await models.JobCard.findOne({
             where:{
                 id:id
             }
@@ -53,21 +53,21 @@ class dbLayer {
             { model: models.Offset },
         ]
         });
-        if (!order) {
+        if (!jobCard) {
             return null; 
         }
         const resultArray = [
-            ...(order.Plates ? order.Plates.map(plate => ({ ...plate.get(), type: 'Plate', uniqueId: generateUniqueId() })) : []),
-            ...(order.ColorPrints ? order.ColorPrints.map(colorPrint => ({ ...colorPrint.get(), type: 'Color Print', uniqueId: generateUniqueId() })) : []),
-            ...(order.WeddingCards ? order.WeddingCards.map(weddingCard => ({ ...weddingCard.get(), type: 'Wedding Card', uniqueId: generateUniqueId() })) : []),
-            ...(order.Panaflexes ? order.Panaflexes.map(panaflex => ({ ...panaflex.get(), type: 'Panaflex', uniqueId: generateUniqueId() })) : []),
-            ...(order.Films ? order.Films.map(film => ({ ...film.get(), type: 'Film', uniqueId: generateUniqueId() })) : []),
-            ...(order.Offsets ? order.Offsets.map(offset => ({ ...offset.get(), type: 'Offset', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.Plates ? jobCard.Plates.map(plate => ({ ...plate.get(), type: 'Plate', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.ColorPrints ? jobCard.ColorPrints.map(colorPrint => ({ ...colorPrint.get(), type: 'Color Print', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.WeddingCards ? jobCard.WeddingCards.map(weddingCard => ({ ...weddingCard.get(), type: 'Wedding Card', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.Panaflexes ? jobCard.Panaflexes.map(panaflex => ({ ...panaflex.get(), type: 'Panaflex', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.Films ? jobCard.Films.map(film => ({ ...film.get(), type: 'Film', uniqueId: generateUniqueId() })) : []),
+            ...(jobCard.Offsets ? jobCard.Offsets.map(offset => ({ ...offset.get(), type: 'Offset', uniqueId: generateUniqueId() })) : []),
         ];
         return resultArray
     }
     static async getByClient(clientId) {
-        return await models.Order.findAll({
+        return await models.JobCard.findAll({
             where:{
                 clientId:clientId
             }
@@ -83,10 +83,10 @@ class dbLayer {
         });
     }
     static async delete(id) {
-        return await models.Order.destroy({where:{id:id}});
+        return await models.JobCard.destroy({where:{id:id}});
     }
     static async create(body) {
-        return await models.Order.create(body);
+        return await models.JobCard.create(body);
     }
     // static async findUser(keyword) {
     //     return await models.User.findAll({

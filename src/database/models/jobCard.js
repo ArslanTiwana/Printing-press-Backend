@@ -2,21 +2,21 @@
 const { Model } = require("sequelize");
 const moment =require('moment')
 module.exports = (sequelize, DataTypes) => {
-  class Order extends Model {
+  class JobCard extends Model {
 
     static associate(models) {
-      models.Client.hasMany(models.Order, {
+      models.Client.hasMany(models.JobCard, {
         foreignKey: "clientId",
       });
-      models.User.hasMany(models.Order, {
+      models.User.hasMany(models.JobCard, {
         foreignKey: "createdBy",
       });
-      models.Order.belongsTo(models.Client, {
+      models.JobCard.belongsTo(models.Client, {
         foreignKey: "clientId",
       });
     }
   }
-  Order.init(
+  JobCard.init(
     {
       expectedDeliveryDate: {
         type: DataTypes.BIGINT,
@@ -48,10 +48,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Order",
-      tableName: "Order",
+      modelName: "JobCard",
+      tableName: "JobCard",
       timestamps:false
     },
   );
-  return Order;
+  return JobCard;
+  updatedOrderinpr
 };

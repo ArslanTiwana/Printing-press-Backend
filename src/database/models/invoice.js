@@ -5,14 +5,14 @@ module.exports = (sequelize, DataTypes) => {
   class Invoice extends Model {
 
     static associate(models) {
-      models.Order.hasMany(models.Invoice, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.Invoice, {
+        foreignKey: "jobCardId",
       });
       models.User.hasMany(models.Invoice, {
         foreignKey: "createdBy",
       });
-      models.Invoice.belongsTo(models.Order, {
-        foreignKey: "orderId",
+      models.Invoice.belongsTo(models.JobCard, {
+        foreignKey: "jobCardId",
       });
     }
   }

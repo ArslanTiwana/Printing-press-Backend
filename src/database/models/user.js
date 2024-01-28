@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: {
+      userName: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         unique: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         unique:true
       },
       name: {
@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       phoneNumber: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      email: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -36,19 +40,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue:"active"
       },
-      verificationCode: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      codeExpiry: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      isCodeVerified: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue:false
-      },   
       accessToken:{
         type: DataTypes.TEXT,
         allowNull: true,

@@ -38,16 +38,16 @@ class PlatesController {
   static async updateScrumboard(req, res) {
     try {
       const { id } = req.params;
-      const { updateBody, ordered } = req.body;
+      const { updateBody, jobCarded } = req.body;
       const resp = await dbLayer.getById(id);
       if (resp) {
         const result = await dbLayer.update(id, updateBody);
         if (result) {
-          const unordered = await dbLayer.getAllForScrumBoard();
+          const unjobCarded = await dbLayer.getAllForScrumBoard();
           let data = [];
-          data.push(ordered.Completed.map((item) => item));
-          data.push(ordered.Pending.map((item) => item));
-          data.push(ordered.Processing.map((item) => item));
+          data.push(jobCarded.Completed.map((item) => item));
+          data.push(jobCarded.Pending.map((item) => item));
+          data.push(jobCarded.Processing.map((item) => item));
           console.log(data);
 
           return res.json(successResponse(200, "Successfull", data));

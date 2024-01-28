@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
   class ColorPrint extends Model {
 
     static associate(models) {
-      models.Order.hasMany(models.ColorPrint, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.ColorPrint, {
+        foreignKey: "jobCardId",
         onDelete: 'CASCADE',
       });
       models.Invoice.hasMany(models.ColorPrint, {

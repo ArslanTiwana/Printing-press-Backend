@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   class Offset extends Model {
 
     static associate(models) {
-      models.Order.hasMany(models.Offset, {
-        foreignKey: "orderId",
+      models.JobCard.hasMany(models.Offset, {
+        foreignKey: "jobCardId",
         onDelete: 'CASCADE'
       });
       models.User.hasMany(models.Offset, {

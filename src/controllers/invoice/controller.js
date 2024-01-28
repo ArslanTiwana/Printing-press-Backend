@@ -2,7 +2,7 @@ const { successResponse, errorResponse } = require("../../utils/response/respons
 const dbLayer = require("./database");
 const models = require("../../database/models");
 const db=require("../../database/models");
-const order = require("../../database/models/order");
+const jobCard = require("../../database/models/jobCard");
 class InvoiceController {
 
   static async create(req, res) {
@@ -12,7 +12,7 @@ class InvoiceController {
       const {items,invoice}=body
       console.log(invoice)
       if(invoice){
-        const updateOrder=await models.Order.update({completeInvoiceCreated:invoice.completedOrder},{ where: { id: invoice.orderId}} , {transaction })
+        const updatejobCard=await models.JobCard.update({completeInvoiceCreated:invoice.completedjobCard},{ where: { id: invoice.jobCardId}} , {transaction })
         const createdInvoice = await models.Invoice.create({...invoice,createdBy:req.user.id}, { transaction });
       
       const platesArray = items.filter(item => (item.type === 'Plate'));

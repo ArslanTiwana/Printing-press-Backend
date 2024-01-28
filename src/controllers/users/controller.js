@@ -3,25 +3,26 @@ const { createAccessToken } = require('../../middlewares/jwt')
 const bcrypt = require("bcrypt");
 const dbLayer = require('./database')
 const Service = require('./service')
-const { sendVerificationEmail, sendForgetPasswordEmail, sendForgetPasswordSMS, sendVerificationSMS } = require('../../utils/constants/constants')
+const { getRandomPassword } = require('../../utils/constants/constants')
+const { newUserEmail } = require('../../utils/constants/constants')
 const moment = require('moment');
 
 class UserController {
   static async login(req, res) {
     try {
-      const { email, password } = req.body;
-      const userInfo = await dbLayer.getbyEmail(email);
+      const { userName, password } = req.body;
+      const userInfo = await dbLayer.getbyUserName(userName);
       if (!userInfo) {
         return res.json(errorResponse(404, "No User Exist with These Credentials"));
       }
-      if (userInfo.status!='active') {
+      if (userInfo.status != 'active') {
         return res.json(errorResponse(401, "User is In Active"));
       }
       const passwordMatch = await bcrypt.compare(password, userInfo.password);
       if (!passwordMatch) {
         return res.json(errorResponse(500, "Invalid Password"));
       }
-      const responseBody={user:userInfo,token:createAccessToken(userInfo)}
+      const responseBody = { user: { userName: userInfo.userName, userType: userInfo.userType }, token: createAccessToken(userInfo) }
       // res.header('Authorization', createAccessToken(userInfo));
       return res.json(successResponse(200, "Authentication successful", responseBody));
     } catch (error) {
@@ -33,21 +34,25 @@ class UserController {
 
   static async register(req, res) {
     try {
-      const body = req.body
-      body.password = await Service.hashedPassword(body.password)
-        const existingUserwithEmail = await dbLayer.getbyEmail(body.email)
-        if (!existingUserwithEmail) {
-          const user = await dbLayer.createUser(body)
-          if (user) {
-            return res.json(successResponse(201, "User created successfully", user));
-          } else {
-            return res.json(errorResponse(401, "User not created"));
-          }
-        }
-        else {
-          return res.json(errorResponse(401, "User with this Email already Exist"));
-        }
-
+      const { userType } = req.body
+      const password = await getRandomPassword();
+      console.log(password)
+      const newPassword = await Service.hashedPassword(password)
+      const userInfo = await dbLayer.getByUserType(userType);
+      const userName = `${userType}${(userInfo.length) + 1}`;
+      console.log(userName)
+      const body = {
+        userName: userName,
+        password: newPassword,
+        userType: userType
+      }
+      const user = await dbLayer.createUser(body)
+      if (user) {
+        newUserEmail('muhammadarslan0111@gmail.com', userName, password)
+        return res.json(successResponse(201, "Successfull", { userName: userName, password: password }));
+      } else {
+        return res.json(errorResponse(401, "User not created"));
+      }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
@@ -56,13 +61,13 @@ class UserController {
 
   static async getAll(req, res) {
     try {
-        const users = await dbLayer.getAll()
-        if (users) {
-            return res.json(successResponse(200, "Successfull", users));
-          } 
-        else {
-          return res.json(errorResponse(404, "User Not Found"));
-        }
+      const users = await dbLayer.getAll()
+      if (users) {
+        return res.json(successResponse(200, "Successfull", users));
+      }
+      else {
+        return res.json(errorResponse(404, "User Not Found"));
+      }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
@@ -70,16 +75,16 @@ class UserController {
   }
   static async delete(req, res) {
     try {
-      const {id}=req.params
-      
-        const users = await dbLayer.getById(id)
-        if (users) {
-            const result=await dbLayer.delete(id)
-            return res.json(successResponse(200, "Successfull", users));
-          } 
-        else {
-          return res.json(errorResponse(404, "User Not Found"));
-        }
+      const { id } = req.params
+
+      const users = await dbLayer.getById(id)
+      if (users) {
+        const result = await dbLayer.delete(id)
+        return res.json(successResponse(200, "Successfull", users));
+      }
+      else {
+        return res.json(errorResponse(404, "User Not Found"));
+      }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
@@ -88,92 +93,61 @@ class UserController {
 
   static async getById(req, res) {
     try {
-      const {id}=req.params
-        const users = await dbLayer.getById(id)
-        if (users) {
-            return res.json(successResponse(200, "Successfull", users));
-          } 
-        else {
-          return res.json(errorResponse(404, "User Not Found"));
-        }
+      const { id } = req.params
+      const users = await dbLayer.getById(id)
+      if (users) {
+        return res.json(successResponse(200, "Successfull", users));
+      }
+      else {
+        return res.json(errorResponse(404, "User Not Found"));
+      }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+
+
+
   static async update(req, res) {
     try {
-      const {id}=req.params
-      const body=req.body
-        const users = await dbLayer.getById(id)
-        if (users) {
-          if(body.email){
-          const result=await dbLayer.getbyEmail(body.email)
-          if(result && result.id!=users.id){
-            return res.json(errorResponse(404, "Email You are Using is Already Used By another User"));
-          }
-        }         
-            const updatedUser=await dbLayer.update(id,body)
-            return res.json(successResponse(200, "Successfull",updatedUser ));          
-          } 
-        else {
-          return res.json(errorResponse(404, "User Not Found"));
-        }
-    } catch (error) {
-      console.log(error)
-      return res.json(errorResponse(500, "Internal Server Error"));
-    }
-  }
-  static async forgetPassword(req, res) {
-    const { email } = req.body
-    const verificationCode = Math.floor(1000 + Math.random() * 9000);
-    const codeExpiry = moment(new Date()).unix() + 900
-    try {
-      const userInfo = await dbLayer.getbyEmail(email);
-      if (userInfo) {
-        await userInfo.update({ verificationCode, codeExpiry })
-        sendForgetPasswordEmail(email, verificationCode)
-        return res.json(successResponse(200, "Forget Password Email Sent Successfully"));
-      } else {
-        return res.json(errorResponse(404, "No user found with this email"));
+      const { id } = req.params
+      const body = req.body
+      const users = await dbLayer.getById(id)
+      body.password =await Service.hashedPassword(body.password)
+      if (users) {
+        const updatedUser = await dbLayer.update(id, body)
+        return res.json(successResponse(200, "Successfull"));
+      }
+      else {
+        return res.json(errorResponse(404, "User Not Found"));
       }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
-
-  static async resetPassword(req, res) {
-    const { password, email, code } = req.body
-    const dt = moment(new Date()).unix()
-    const newPassword = await Service.hashedPassword(password)
+  static async changePassword(req, res) {
+    const { currentPassword, newPassword } = req.body
     try {
-      const userInfo = await dbLayer.getbyEmail(email);
+      const userInfo = await dbLayer.getbyUserName(req.user.userName);
       if (userInfo) {
-        if (userInfo.codeExpiry > dt) {
-          if (userInfo.verificationCode === code) {
-            userInfo.update({ password: newPassword, verificationCode: null, codeExpiry: null })
-          } else {
-            return res.json(errorResponse(404, "The Code is In Valid"));
-          }
+        const passwordMatch = await bcrypt.compare(currentPassword, userInfo.password);
+        if (passwordMatch) {
+        const password=await Service.hashedPassword(newPassword)
+        const updated=await dbLayer.update(userInfo.id,{password:password})
+     
+          return res.json(successResponse(200, "Successfull"));
         } else {
-          return res.json(errorResponse(404, "The Code is Expired"));
+          return res.json(errorResponse(401, "Current Password is not Correct"));
         }
+
       } else {
-        return res.json(errorResponse(404, "No user found with this email"));
       }
-      return res.json(successResponse(200, "Password Reset Successfully"));
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
     }
-  }
-
-  static async search(req, res) {
-    const keyword = req.query.search
-    const users =await dbLayer.findUser(keyword)
-    res.send(users);
   }
 }
 
