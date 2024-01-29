@@ -12,7 +12,7 @@ async function Authorization(req, res, next) {
   try {
     const token = currentToken(req);
     const result = await verifyAccessToken(token);
-      if (!result.data) {
+      if (!result?.data) {
         console.log('Permission:', 'Unauthorized!');
         return res.status(401).json({
           code: 401,
