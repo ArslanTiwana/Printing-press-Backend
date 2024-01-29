@@ -13,7 +13,7 @@ const platesLayer = require("../plates/database");
 class UserController {
   static async create(req, res) {
     try {
-      const { expectedDeliveryDate, client, plates, panaflex, film, weddingCard, colorPrint, offset } = req.body;
+      let { expectedDeliveryDate, client, plates, panaflex, film, weddingCard, colorPrint, offset } = req.body;
       let clientId;
       if (client.id) {
         clientId = client.id
@@ -27,46 +27,39 @@ class UserController {
           return res.json(errorResponse(401, "Client with this Phone Number Already Exist"));
         }
       }
+
       const jobCard = await dbLayer.create({ expectedDeliveryDate, clientId, createdBy: req.user.id })
       if (jobCard) {
-        const createdEntities = [];
 
         if (plates.length != 0) {
           const modifiedBody = Service.modifiedBody(plates, jobCard.id)
           console.log(modifiedBody)
-          const createdPlates =await platesLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'Plates', data: createdPlates });
+          plates =await platesLayer.createBulk(modifiedBody)
         }
         if (weddingCard.length != 0) {
           const modifiedBody = Service.modifiedBody(weddingCard, jobCard.id)
-          const createdPlates =await weddingCardLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'WeddingCards', data: createdPlates });
+          weddingCard =await weddingCardLayer.createBulk(modifiedBody)
         }
         if (panaflex.length != 0) {
           const modifiedBody = Service.modifiedBody(panaflex, jobCard.id)
-          const createdPlates =await panaflexLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'Panaflex', data: createdPlates });
+          panaflex =await panaflexLayer.createBulk(modifiedBody)
         }
         if (film.length != 0) {
           const modifiedBody = Service.modifiedBody(film, jobCard.id)
-         
-          const createdPlates = await filmLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'Films', data: createdPlates });
+          film = await filmLayer.createBulk(modifiedBody)
         }
         if (offset.length != 0) {
           const modifiedBody = Service.modifiedBody(offset, jobCard.id)
-          const createdPlates =await offsetLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'Offset', data: createdPlates });
+          offset =await offsetLayer.createBulk(modifiedBody)
         }
         if (colorPrint.length != 0) {
           const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id)    
-          const createdPlates =await colorPrintLayer.createBulk(modifiedBody)
-          createdEntities.push({ type: 'Color Prints', data: createdPlates });
+          colorPrint =await colorPrintLayer.createBulk(modifiedBody)
         }
       } else {
         return res.json(errorResponse(401, "JobCard Not created"));
       }
-      return res.json(successResponse(200, "JobCard Created Sucessfully", created));
+      return res.json(successResponse(200, "JobCard Created Sucessfully", {plates,panaflex,weddingCard,colorPrint,film,offset}));
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));

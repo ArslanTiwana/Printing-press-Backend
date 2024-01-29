@@ -2,7 +2,7 @@ const router = require("express").Router();
 const userController=require('../controllers/users/controller')
 const {Authorization}=require('../middlewares/jwt')
 
-router.post("/register",Authorization,userController.register);
+router.post("/register",userController.register);
 router.post("/change_password",Authorization,userController.changePassword);
 router.put("/update/:id",Authorization,userController.update);
 router.get("/get",Authorization,userController.getAll);
