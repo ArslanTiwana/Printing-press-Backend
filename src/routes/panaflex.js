@@ -7,5 +7,6 @@ router.get("/get/:id",Authorization,PanaflexController.getById);
 router.post("/create",Authorization,PanaflexController.create);
 router.put("/update/:id",Authorization,PanaflexController.update);
 router.delete("/delete/:id",Authorization,PanaflexController.delete);
+router.get("/get_pending",Authorization,PanaflexController.getAllPending);
 
 module.exports = router;

@@ -44,6 +44,20 @@ class ColorPrintController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async getAllPending(req, res) {
+    try {
+      const result =await dbLayer.getAllPending()
+      if (result) {
+        return res.json(successResponse(200, "Successfull",result));
+      }
+      else{
+        return res.json(successResponse(200, "Not Found",{}));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async getById(req, res) {
     try {
       const {id}=req.params

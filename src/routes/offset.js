@@ -7,5 +7,6 @@ router.get("/get/:id",Authorization,OffsetController.getById);
 router.post("/create",Authorization,OffsetController.create);
 router.put("/update/:id",Authorization,OffsetController.update);
 router.delete("/delete/:id",Authorization,OffsetController.delete);
+router.get("/get_pending",Authorization,OffsetController.getAllPending);
 
 module.exports = router;

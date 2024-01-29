@@ -4,6 +4,9 @@ class dbLayer {
     static async getAll() {
         return await models.ColorPrint.findAll();
     }
+    static async getAllPending() {
+        return await models.ColorPrint.findAll({where:{status:'pending'}});
+    }
     static async getById(id) {
         return await models.ColorPrint.findByPk(id);
     }

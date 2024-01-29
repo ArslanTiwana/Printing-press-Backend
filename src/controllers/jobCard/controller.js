@@ -112,6 +112,10 @@ class UserController {
       if (result) {
         return res.json(successResponse(200, "Successfull",result));
       }
+      else{
+        return res.json(errorResponse(404, "Not Found",result));
+
+      }
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));

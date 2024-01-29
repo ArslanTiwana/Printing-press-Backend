@@ -7,6 +7,9 @@ class dbLayer {
     static async getById(id) {
         return await models.Offset.findByPk(id);
     }
+    static async getAllPending() {
+        return await models.Offset.findAll({where:{status:'pending'}});
+    }
     static async create(body) {
         return await models.Offset.create(body,{where:{id:id}});
     }

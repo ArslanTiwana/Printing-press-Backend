@@ -7,5 +7,6 @@ router.get("/get/:id",Authorization,FilmController.getById);
 router.post("/create",Authorization,FilmController.create);
 router.put("/update/:id",Authorization,FilmController.update);
 router.delete("/delete/:id",Authorization,FilmController.delete);
+router.get("/get_pending",Authorization,FilmController.getAllPending);
 
 module.exports = router;

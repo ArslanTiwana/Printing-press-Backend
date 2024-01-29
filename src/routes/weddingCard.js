@@ -7,5 +7,6 @@ router.get("/get/:id",Authorization,WeddingCardController.getById);
 router.post("/create",Authorization,WeddingCardController.create);
 router.put("/update/:id",Authorization,WeddingCardController.update);
 router.delete("/delete/:id",Authorization,WeddingCardController.delete);
+router.get("/get_pending",Authorization,WeddingCardController.getAllPending);
 
 module.exports = router;

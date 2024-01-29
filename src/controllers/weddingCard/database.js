@@ -4,6 +4,9 @@ class dbLayer {
     static async getAll() {
         return await models.WeddingCard.findAll();
     }
+    static async getAllPending() {
+        return await models.WeddingCard.findAll({where:{status:'pending'}});
+    }
     static async getById(id) {
         return await models.WeddingCard.findByPk(id);
     }

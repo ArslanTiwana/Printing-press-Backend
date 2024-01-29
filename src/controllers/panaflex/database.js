@@ -4,6 +4,9 @@ class dbLayer {
     static async getAll() {
         return await models.Panaflex.findAll();
     }
+    static async getAllPending() {
+        return await models.Panaflex.findAll({where:{status:'pending'}});
+    }
     static async getById(id) {
         return await models.Panaflex.findByPk(id);
     }
