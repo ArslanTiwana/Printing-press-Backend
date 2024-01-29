@@ -29,35 +29,44 @@ class UserController {
       }
       const jobCard = await dbLayer.create({ expectedDeliveryDate, clientId, createdBy: req.user.id })
       if (jobCard) {
+        const createdEntities = [];
+
         if (plates.length != 0) {
           const modifiedBody = Service.modifiedBody(plates, jobCard.id)
           console.log(modifiedBody)
-          await platesLayer.createBulk(modifiedBody)
+          const createdPlates =await platesLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'Plates', data: createdPlates });
         }
         if (weddingCard.length != 0) {
           const modifiedBody = Service.modifiedBody(weddingCard, jobCard.id)
-          await weddingCardLayer.createBulk(modifiedBody)
+          const createdPlates =await weddingCardLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'WeddingCards', data: createdPlates });
         }
         if (panaflex.length != 0) {
           const modifiedBody = Service.modifiedBody(panaflex, jobCard.id)
-          await panaflexLayer.createBulk(modifiedBody)
+          const createdPlates =await panaflexLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'Panaflex', data: createdPlates });
         }
         if (film.length != 0) {
           const modifiedBody = Service.modifiedBody(film, jobCard.id)
-          await filmLayer.createBulk(modifiedBody)
+         
+          const createdPlates = await filmLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'Films', data: createdPlates });
         }
         if (offset.length != 0) {
           const modifiedBody = Service.modifiedBody(offset, jobCard.id)
-          await offsetLayer.createBulk(modifiedBody)
+          const createdPlates =await offsetLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'Offset', data: createdPlates });
         }
         if (colorPrint.length != 0) {
-          const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id)
-          await colorPrintLayer.createBulk(modifiedBody)
+          const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id)    
+          const createdPlates =await colorPrintLayer.createBulk(modifiedBody)
+          createdEntities.push({ type: 'Color Prints', data: createdPlates });
         }
       } else {
         return res.json(errorResponse(401, "JobCard Not created"));
       }
-      return res.json(successResponse(200, "JobCard Created Sucessfully", jobCard));
+      return res.json(successResponse(200, "JobCard Created Sucessfully", created));
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));
