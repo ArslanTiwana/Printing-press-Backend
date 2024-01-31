@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique:true
       },
+      mobileNumbers: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true,
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       createdOn:{
         type:DataTypes.BIGINT,
         allowNull:false,

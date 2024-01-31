@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       });
       models.Film.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
+      }); 
+      models.User.hasMany(models.JobCard, {
+        foreignKey: "createdBy",
       });
     }
   }

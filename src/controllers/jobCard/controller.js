@@ -2,6 +2,7 @@ const { successResponse, errorResponse } = require("../../utils/response/respons
 const dbLayer = require('./database')
 const Service = require('./service')
 const clientLayer = require("../client/database");
+const otherJobsLayer = require("../otherJob/database");
 
 const weddingCardLayer = require("../weddingCard/database");
 const offsetLayer = require("../offset/database");
@@ -13,7 +14,7 @@ const platesLayer = require("../plates/database");
 class UserController {
   static async create(req, res) {
     try {
-      let { expectedDeliveryDate, client, plates, panaflex, film, weddingCard, colorPrint, offset } = req.body;
+      let { expectedDeliveryDate, client, plates, panaflex, film, weddingCard, colorPrint, offset,others } = req.body;
       let clientId;
       if (client.id) {
         clientId = client.id
@@ -32,34 +33,38 @@ class UserController {
       if (jobCard) {
 
         if (plates.length != 0) {
-          const modifiedBody = Service.modifiedBody(plates, jobCard.id)
+          const modifiedBody = Service.modifiedBody(plates, jobCard.id,req.user.id)
           console.log(modifiedBody)
           plates =await platesLayer.createBulk(modifiedBody)
         }
         if (weddingCard.length != 0) {
-          const modifiedBody = Service.modifiedBody(weddingCard, jobCard.id)
+          const modifiedBody = Service.modifiedBody(weddingCard, jobCard.id,req.user.id)
           weddingCard =await weddingCardLayer.createBulk(modifiedBody)
         }
         if (panaflex.length != 0) {
-          const modifiedBody = Service.modifiedBody(panaflex, jobCard.id)
+          const modifiedBody = Service.modifiedBody(panaflex, jobCard.id,req.user.id)
           panaflex =await panaflexLayer.createBulk(modifiedBody)
         }
         if (film.length != 0) {
-          const modifiedBody = Service.modifiedBody(film, jobCard.id)
+          const modifiedBody = Service.modifiedBody(film, jobCard.id,req.user.id)
           film = await filmLayer.createBulk(modifiedBody)
         }
         if (offset.length != 0) {
-          const modifiedBody = Service.modifiedBody(offset, jobCard.id)
+          const modifiedBody = Service.modifiedBody(offset, jobCard.id,req.user.id)
           offset =await offsetLayer.createBulk(modifiedBody)
         }
         if (colorPrint.length != 0) {
-          const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id)    
+          const modifiedBody = Service.modifiedBody(colorPrint, jobCard.id,req.user.id)    
           colorPrint =await colorPrintLayer.createBulk(modifiedBody)
+        }
+        if (others.length != 0) {
+          const modifiedBody = Service.modifiedBody(others, jobCard.id,req.user.id)    
+          others =await otherJobsLayer.createBulk(modifiedBody)
         }
       } else {
         return res.json(errorResponse(401, "JobCard Not created"));
       }
-      return res.json(successResponse(200, "JobCard Created Sucessfully", {plates,panaflex,weddingCard,colorPrint,film,offset}));
+      return res.json(successResponse(200, "JobCard Created Sucessfully", {plates,panaflex,weddingCard,colorPrint,film,offset,others}));
     } catch (error) {
       console.log(error)
       return res.json(errorResponse(500, "Internal Server Error"));

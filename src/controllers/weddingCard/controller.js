@@ -17,7 +17,7 @@ class WeddingCardController {
   } 
   static async getAllPending(req, res) {
     try {
-      const result =await dbLayer.getAllPending()
+      const result =await dbLayer.getAllPending(req.user.id)
       if (result) {
         return res.json(successResponse(200, "Successfull",result));
       }

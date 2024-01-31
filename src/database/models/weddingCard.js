@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       models.WeddingCard.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
       });
+      models.User.hasMany(models.JobCard, {
+        foreignKey: "createdBy",
+      });
       // models.Firm.hasMany(models.WeddingCard, {
       //   foreignKey: "firm_id",
       // });

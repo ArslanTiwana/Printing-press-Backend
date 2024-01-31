@@ -3,19 +3,19 @@ const { Model } = require("sequelize");
 const moment =require('moment')
 
 module.exports = (sequelize, DataTypes) => {
-  class Panaflex extends Model {
+  class OtherJob extends Model {
     static associate(models) {
-      models.JobCard.hasMany(models.Panaflex, {
+      models.JobCard.hasMany(models.OtherJob, {
         foreignKey: "jobCardId",
         onDelete: 'CASCADE'
       });
-      models.User.hasMany(models.Panaflex, {
+      models.User.hasMany(models.OtherJob, {
         foreignKey: "completedBy",
       });
-      models.Invoice.hasMany(models.Panaflex, {
+      models.Invoice.hasMany(models.OtherJob, {
         foreignKey: "invoiceId",
       });
-      models.Panaflex.belongsTo(models.Invoice, {
+      models.OtherJob.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
       });
       models.User.hasMany(models.JobCard, {
@@ -23,37 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Panaflex.init(
+  OtherJob.init(
     {
       quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      sizeX: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      sizeY: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      media: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      isStick: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-      },
-      isFolding: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-      },
-      isRing: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-      },
-      ringQuantity: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
@@ -63,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       rate: {
         type: DataTypes.INTEGER,
-        allowNull: true, 
+        allowNull: true,
       },
       discount: {
         type: DataTypes.INTEGER,
@@ -86,10 +58,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Panaflex",
-      tableName: "Panaflex",
+      modelName: "OtherJob",
+      tableName: "OtherJob",
       timestamps:false
     },
   );
-  return Panaflex;
+  return OtherJob;
 };

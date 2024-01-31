@@ -4,7 +4,7 @@ const {
 } = require("../../utils/response/response");
 const dbLayer = require("./database");
 
-class PlatesController {
+class OtherJobController {
   static async create(req, res) {
     try {
       const body = req.body;
@@ -127,4 +127,4 @@ class PlatesController {
   }
 }
 
-module.exports = PlatesController;
+module.exports = OtherJobController;
