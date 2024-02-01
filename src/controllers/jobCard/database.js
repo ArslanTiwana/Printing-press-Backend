@@ -5,28 +5,29 @@ const generateUniqueId = () => {
     return Math.random() + Date.now();
 };
 class dbLayer {
-  
-    
+
+
     static async getById(id) {
         return await models.JobCard.findByPk(id);
     }
-    static async update(id,body) {
-        return await models.JobCard.update(body,{where:{id:id}});
+    static async update(id, body) {
+        return await models.JobCard.update(body, { where: { id: id } });
     }
     static async getDetailsById(id) {
         return await models.JobCard.findOne({
-            where:{
-                id:id
+            where: {
+                id: id
             }
             ,
-        include: [
-            { model: models.Plates },
-            { model: models.ColorPrint },
-            { model: models.WeddingCard },
-            { model: models.Panaflex },
-            { model: models.Film },
-            { model: models.Offset },
-        ]
+            include: [
+                { model: models.Plates },
+                { model: models.ColorPrint },
+                { model: models.WeddingCard },
+                { model: models.Panaflex },
+                { model: models.Film },
+                { model: models.Offset },
+                { model: models.OtherJob },
+            ]
         });
     }
     static async getAll() {
@@ -38,23 +39,34 @@ class dbLayer {
         }
         );
     }
+    static async getAllOfUser(userId) {
+        return await models.JobCard.findAll({
+            where: { createdBy: userId },
+            include: [
+                { model: models.Client },
+                { model: models.Invoice },
+            ]
+        }
+        );
+    }
+
     static async getInvoicejobCardItemsById(id) {
-        const jobCard= await models.JobCard.findOne({
-            where:{
-                id:id
+        const jobCard = await models.JobCard.findOne({
+            where: {
+                id: id
             }
             ,
-        include: [
-            { model: models.Plates },
-            { model: models.ColorPrint },
-            { model: models.WeddingCard },
-            { model: models.Panaflex },
-            { model: models.Film },
-            { model: models.Offset },
-        ]
+            include: [
+                { model: models.Plates },
+                { model: models.ColorPrint },
+                { model: models.WeddingCard },
+                { model: models.Panaflex },
+                { model: models.Film },
+                { model: models.Offset },
+            ]
         });
         if (!jobCard) {
-            return null; 
+            return null;
         }
         const resultArray = [
             ...(jobCard.Plates ? jobCard.Plates.map(plate => ({ ...plate.get(), type: 'Plate', uniqueId: generateUniqueId() })) : []),
@@ -68,22 +80,22 @@ class dbLayer {
     }
     static async getByClient(clientId) {
         return await models.JobCard.findAll({
-            where:{
-                clientId:clientId
+            where: {
+                clientId: clientId
             }
             ,
-        include: [
-            { model: models.Plates },
-            { model: models.ColorPrint },
-            { model: models.WeddingCard },
-            { model: models.Panaflex },
-            { model: models.Film },
-            { model: models.Offset },
-        ]
+            include: [
+                { model: models.Plates },
+                { model: models.ColorPrint },
+                { model: models.WeddingCard },
+                { model: models.Panaflex },
+                { model: models.Film },
+                { model: models.Offset },
+            ]
         });
     }
     static async delete(id) {
-        return await models.JobCard.destroy({where:{id:id}});
+        return await models.JobCard.destroy({ where: { id: id } });
     }
     static async create(body) {
         return await models.JobCard.create(body);

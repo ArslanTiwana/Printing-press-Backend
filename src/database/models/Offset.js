@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       models.Offset.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
       });
-      models.User.hasMany(models.JobCard, {
+      models.User.hasMany(models.Offset, {
         foreignKey: "createdBy",
       });
       // models.Firm.hasMany(models.WeddingCard, {

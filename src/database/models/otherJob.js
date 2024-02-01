@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       models.OtherJob.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
       });
-      models.User.hasMany(models.JobCard, {
+      models.User.hasMany(models.OtherJob, {
         foreignKey: "createdBy",
       });
     }

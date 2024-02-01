@@ -110,6 +110,27 @@ class UserController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async getAllofUser(req, res) {
+    try {
+      const result = await dbLayer.getAllOfUser(req.user.id)
+      if (result) {
+        const filteredArray = result.map((item) => {
+          return {
+            name:item.Client?.name,
+            email:item.Client?.email,
+            phoneNumber:item.Client?.phoneNumber, 
+            id:item.id,
+            status:item.status,
+            invoices:item.Invoices
+          };
+        });
+        return res.json(successResponse(200, "Successfull",filteredArray));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async getById(req, res) {
     const {id}= req.params;
     try {

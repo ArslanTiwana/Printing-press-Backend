@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       models.Panaflex.belongsTo(models.Invoice, {
         foreignKey: "invoiceId",
       });
-      models.User.hasMany(models.JobCard, {
+      models.User.hasMany(models.Panaflex, {
         foreignKey: "createdBy",
       });
     }

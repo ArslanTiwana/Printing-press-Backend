@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.ColorPrint, {
         foreignKey: "completedBy",
       });
-      models.User.hasMany(models.JobCard, {
+      models.User.hasMany(models.ColorPrint, {
         foreignKey: "createdBy",
       });
     }
