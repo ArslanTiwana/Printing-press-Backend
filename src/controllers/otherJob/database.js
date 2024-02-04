@@ -5,7 +5,7 @@ class dbLayer {
         return await models.OtherJob.findAll();
     }
     static async getAllPending(userId) {
-        return await models.OtherJob.findAll({where:{status:'pending',createdBy:userId}});
+        return await models.OtherJob.findAll({where:{status:'Pending',createdBy:userId}});
     }
     static async getAllForScrumBoard() {
         const data= await models.OtherJob.findAll();

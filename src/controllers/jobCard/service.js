@@ -5,7 +5,7 @@ class ServiceLayer {
         const modifiedBody=body.map(item=>{
             return {
                 ...item,
-                status:item.status?"processing":"pending",
+                status:item.status?"Processing":"Pending",
                 jobCardId:id,
                 createdBy:userId
             }

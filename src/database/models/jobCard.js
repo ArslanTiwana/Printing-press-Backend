@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue:"pending"
+        defaultValue:"Pending"
       },
       completeInvoiceCreated: {
         type: DataTypes.BOOLEAN,

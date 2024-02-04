@@ -19,6 +19,7 @@ class UserController {
         return res.json(errorResponse(401, "User is In Active"));
       }
       const passwordMatch = await bcrypt.compare(password, userInfo.password);
+      console.log(password)
       if (!passwordMatch) {
         return res.json(errorResponse(500, "Invalid Password"));
       }
@@ -114,10 +115,28 @@ class UserController {
       const { id } = req.params
       const body = req.body
       const users = await dbLayer.getById(id)
-      body.password =await Service.hashedPassword(body.password)
       if (users) {
         const updatedUser = await dbLayer.update(id, body)
         return res.json(successResponse(200, "Successfull"));
+      }
+      else {
+        return res.json(errorResponse(404, "User Not Found"));
+      }
+    } catch (error) {
+      console.log(error)
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+
+  static async resetPassword(req, res) {
+    try {
+      const { id } = req.params
+      const users = await dbLayer.getById(id)
+      let password = await getRandomPassword();
+      const hashedpassword = await Service.hashedPassword(password)
+      if (users) {
+        await dbLayer.update(id, { password: hashedpassword })
+        return res.json(successResponse(200, "Successfull", { newGeneratedPassword: password }));
       }
       else {
         return res.json(errorResponse(404, "User Not Found"));
@@ -134,9 +153,9 @@ class UserController {
       if (userInfo) {
         const passwordMatch = await bcrypt.compare(currentPassword, userInfo.password);
         if (passwordMatch) {
-        const password=await Service.hashedPassword(newPassword)
-        const updated=await dbLayer.update(userInfo.id,{password:password})
-     
+          const password = await Service.hashedPassword(newPassword)
+          const updated = await dbLayer.update(userInfo.id, { password: password })
+
           return res.json(successResponse(200, "Successfull"));
         } else {
           return res.json(errorResponse(401, "Current Password is not Correct"));

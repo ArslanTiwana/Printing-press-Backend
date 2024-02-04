@@ -8,16 +8,16 @@ class dbLayer {
         return await models.Offset.findByPk(id);
     }
     static async getAllPending(userId) {
-        return await models.Offset.findAll({where:{status:'pending',createdBy:userId}});
+        return await models.Offset.findAll({where:{status:'Pending',createdBy:userId}});
     }
     static async create(body) {
-        return await models.Offset.create(body,{where:{id:id}});
+        return await models.Offset.create(body);
     }
     static async createBulk(body) {
         return await models.Offset.bulkCreate(body);
     }
     static async update(id,body) {
-        return await models.Offset.update(id,body);
+        return await models.Offset.update(body,{where:{id:id}});
     }
     static async delete(id) {
         return await models.Client.destroy({where:{id:id}});

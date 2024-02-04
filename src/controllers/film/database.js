@@ -5,7 +5,7 @@ class dbLayer {
         return await models.Film.findAll();
     }
     static async getAllPending(userId) {
-        return await models.Film.findAll({where:{status:'pending',createdBy:userId}});
+        return await models.Film.findAll({where:{status:'Pending',createdBy:userId}});
     }
     static async getById(id) {
         return await models.Film.findByPk(id);
