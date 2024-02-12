@@ -58,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue:"Pending" 
       },
+      sortNo: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       createdOn:{
         type:DataTypes.BIGINT,
         allowNull:false,

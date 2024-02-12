@@ -19,12 +19,12 @@ class PlatesController {
   }
   static async getAllPending(req, res) {
     try {
-      const result =await dbLayer.getAllPending(req.user.id)
+      const result = await dbLayer.getAllPending(req.user.id)
       if (result) {
-        return res.json(successResponse(200, "Successfull",result));
+        return res.json(successResponse(200, "Successfull", result));
       }
-      else{
-        return res.json(successResponse(200, "Not Found",{}));
+      else {
+        return res.json(successResponse(200, "Not Found", {}));
       }
     } catch (error) {
       console.log(error)
@@ -52,22 +52,16 @@ class PlatesController {
   static async updateScrumboard(req, res) {
     try {
       const { id } = req.params;
-      const { updateBody, jobCarded } = req.body;
+      const { updateBody, ordered } = req.body;
       const resp = await dbLayer.getById(id);
       if (resp) {
-        const result = await dbLayer.update(id, updateBody);
-        if (result) {
-          const unjobCarded = await dbLayer.getAllForScrumBoard();
-          let data = [];
-          data.push(jobCarded.Completed.map((item) => item));
-          data.push(jobCarded.Pending.map((item) => item));
-          data.push(jobCarded.Processing.map((item) => item));
-          console.log(data);
-
-          return res.json(successResponse(200, "Successfull", data));
-        }
+        await dbLayer.update(id, updateBody);
+          ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+          ordered.Pending.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+          ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+          return res.json(successResponse(200, "Successfull", {}));
       } else {
-        return res.json(errorResponse(404, "No Found"));
+        return res.json(errorResponse(404, "Not Found"));
       }
     } catch (error) {
       console.log(error);
