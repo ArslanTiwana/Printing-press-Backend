@@ -57,7 +57,7 @@ class PlatesController {
       if (resp) {
         await dbLayer.update(id, updateBody);
           ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-          ordered.Pending.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+          ordered.SentToCounter.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
           ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
           return res.json(successResponse(200, "Successfull", {}));
       } else {
