@@ -1,8 +1,16 @@
 const models = require("../../database/models");
-
+const db =require('../../database/models')
 class dbLayer {
     static async getAll() {
         return await models.Plates.findAll();
+  
+    }
+    static async getAllProcessing() {
+        const result = await models.Plates.findAll({
+            where: { status: 'Processing' },
+            order: [['sortNo', 'ASC']],
+          });
+          return result
     }
     static async getAllPending(userId) {
         return await models.Plates.findAll({where:{status:'Pending',createdBy:userId}});

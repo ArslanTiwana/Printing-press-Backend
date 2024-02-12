@@ -49,6 +49,27 @@ class PlatesController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
+  static async statusChange(req, res) {
+    try {
+      const { id } = req.params;
+      const resp = await dbLayer.getById(id);
+      if (resp) {
+        const response= await dbLayer.getAllProcessing()
+        if(response.length>0){
+          response.map(async (item)=>await dbLayer.update(item.id,{sortNo:item.sortNo+1}))
+        }
+        const result = await dbLayer.update(id, {status:"Processing",sortNo:0});
+        if (result) {
+          return res.json(successResponse(200, "Successfull", result));
+        }
+      } else {
+        return res.json(errorResponse(404, "Not Found"));
+      }
+    } catch (error) {
+      console.log(error);
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
   static async updateScrumboard(req, res) {
     try {
       const { id } = req.params;
