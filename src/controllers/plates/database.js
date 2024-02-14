@@ -16,16 +16,31 @@ class dbLayer {
         return await models.Plates.findAll({where:{status:'Pending',createdBy:userId}});
     }
     static async getAllForScrumBoard() {
-        const data= await models.Plates.findAll();
+        // const data= await models.Plates.findAll();
+        const query = `
+        SELECT p.*,c.name as "clientName",c."phoneNumber"
+        FROM "Plates" p
+        INNER JOIN "JobCard" jc ON jc.id = p."jobCardId"
+        INNER JOIN "Client" c ON c.id = jc."clientId"
+    `;      
+        const [data, metadata] = await db.sequelize.query(query)
+        console.log(data)
         const response = data.map(item => {
-            const updatedItem = { ...item.get({ plain: true }), id: item.id.toString() };
+            const updatedItem = { ...item, id: item.id.toString() };
             return updatedItem;
         });        
         return response
     }
     static async getById(id) {
-        return await models.Plates.findByPk(id);
-    }
+        const query = `
+        SELECT p.*,c.name as "clientName",c."phoneNumber"
+        FROM "Plates" p
+        INNER JOIN "JobCard" jc ON jc.id = p."jobCardId"
+        INNER JOIN "Client" c ON c.id = jc."clientId"
+        WHERE p.id = ${id}
+    `;        const [plate, metadata] = await db.sequelize.query(query)  
+        return plate
+     }
     static async create(body) {
         return await models.Plates.create(body);
     }

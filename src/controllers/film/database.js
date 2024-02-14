@@ -1,4 +1,5 @@
 const models = require("../../database/models");
+const db =require('../../database/models')
 
 class dbLayer {
     static async getAll() {
@@ -8,7 +9,15 @@ class dbLayer {
         return await models.Film.findAll({where:{status:'Pending',createdBy:userId}});
     }
     static async getById(id) {
-        return await models.Film.findByPk(id);
+        const query = `
+        SELECT p.*,c.name as "clientName",c."phoneNumber"
+        FROM "Film" p
+        INNER JOIN "JobCard" jc ON jc.id = p."jobCardId"
+        INNER JOIN "Client" c ON c.id = jc."clientId"
+        WHERE p.id = ${id}
+    `;
+        const [result, metadata] = await db.sequelize.query(query)
+        return result
     }
     static async create(body) {
         return await models.Film.create(body);

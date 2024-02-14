@@ -1,11 +1,20 @@
 const models = require("../../database/models");
+const db =require('../../database/models')
 
 class dbLayer {
     static async getAll() {
         return await models.Offset.findAll();
     }
     static async getById(id) {
-        return await models.Offset.findByPk(id);
+        const query = `
+        SELECT p.*,c.name as "clientName",c."phoneNumber"
+        FROM "Offset" p
+        INNER JOIN "JobCard" jc ON jc.id = p."jobCardId"
+        INNER JOIN "Client" c ON c.id = jc."clientId"
+        WHERE p.id = ${id}
+    `;
+        const [result, metadata] = await db.sequelize.query(query)
+        return result
     }
     static async getAllPending(userId) {
         return await models.Offset.findAll({where:{status:'Pending',createdBy:userId}});
