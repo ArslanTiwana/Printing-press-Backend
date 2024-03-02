@@ -17,7 +17,7 @@ class dbLayer {
         WHERE p.id = ${id}
     `;
         const [result, metadata] = await db.sequelize.query(query)
-        return result
+        return result[0]
     }
     static async create(body) {
         return await models.Film.create(body);

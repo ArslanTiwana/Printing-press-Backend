@@ -6,6 +6,7 @@ class ServiceLayer {
             return {
                 ...item,
                 status:item.status?"Processing":"Pending",
+                sortNo:item.status?-1:null,
                 jobCardId:id,
                 createdBy:userId
             }

@@ -8,6 +8,7 @@ class dbLayer {
     static async getAllPending(userId) {
         return await models.Panaflex.findAll({ where: { status: 'Pending', createdBy: userId } });
     }
+   
     static async getById(id) {
         const query = `
         SELECT p.*,c.name as "clientName",c."phoneNumber"
@@ -17,7 +18,7 @@ class dbLayer {
         WHERE p.id = ${id}
     `;
         const [result, metadata] = await db.sequelize.query(query)
-        return result
+        return result[0]
     }
     static async create(body) {
         return await models.Panaflex.create(body);
@@ -44,6 +45,27 @@ class dbLayer {
                 name: keyword,
             },
         });
+    }
+    static async getAllForScrumBoard() {
+        const query = `
+        SELECT p.*,c.name as "clientName",c."phoneNumber"
+        FROM "Panaflex" p
+        INNER JOIN "JobCard" jc ON jc.id = p."jobCardId"
+        INNER JOIN "Client" c ON c.id = jc."clientId"
+    `;      
+        const [data, metadata] = await db.sequelize.query(query)
+        const response = data.map(item => {
+            const updatedItem = { ...item, id: item.id.toString() };
+            return updatedItem;
+        });        
+        return response
+    }
+    static async getAllProcessing() {
+        const result = await models.Panaflex.findAll({
+            where: { status: 'Processing' },
+            order: [['sortNo', 'ASC']],
+          });
+          return result
     }
 }
 module.exports = dbLayer

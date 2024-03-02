@@ -100,12 +100,6 @@ class dbLayer {
     static async create(body) {
         return await models.JobCard.create(body);
     }
-    // static async findUser(keyword) {
-    //     return await models.User.findAll({
-    //         where: {
-    //             name: keyword,
-    //         },
-    //     });
-    // }
+  
 }
 module.exports = dbLayer

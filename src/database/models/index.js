@@ -27,14 +27,8 @@ try {
 } catch (error) {
   console.error("Unable to connect to the database:", error);
 }
-// sequelize
-//   .sync({alter:true}) //{ force: true }    
-//   .then(() => {
-//     console.log("Database synchronization complete.");
-//   })
-//   .catch((error) => {
-//     console.error("Error synchronizing models:", error);
-//   });
+// sequelize.sync({alter:true}) //{ force: true }    
+
 
 fs.readdirSync(__dirname)
   .filter((file) => {

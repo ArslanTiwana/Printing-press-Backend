@@ -48,7 +48,6 @@ async function verifyAccessToken(token) {
       return { data: null, message: 'Unauthorized!' };
     }
     const data = jwt.verify(token, "JWT_SECRET_ACCESS_TOKEN");
-    console.log("data",data)
     return { data, message: 'Token is verified' };
   } catch (err) {
     if (err instanceof TokenExpiredError) {

@@ -54,11 +54,8 @@ class PlatesController {
       const { id } = req.params;
       const resp = await dbLayer.getById(id);
       if (resp) {
-        const response= await dbLayer.getAllProcessing()
-        if(response.length>0){
-          response.map(async (item)=>await dbLayer.update(item.id,{sortNo:item.sortNo+1}))
-        }
-        const result = await dbLayer.update(id, {status:"Processing",sortNo:0});
+      
+        const result = await dbLayer.update(id, {status:"Processing",sortNo:-1});
         if (result) {
           return res.json(successResponse(200, "Successfull", result));
         }
@@ -77,9 +74,11 @@ class PlatesController {
       const resp = await dbLayer.getById(id);
       if (resp) {
         await dbLayer.update(id, updateBody);
-          ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-          ordered.SentToCounter.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-          ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+        console.log("updateBody.status",updateBody.status)
+        console.log("resp.status",resp.status)
+        if (updateBody.status=="Completed" || resp.status=="Completed") ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+        if (updateBody.status=="SentToCounter" || resp.status=="SentToCounter")  ordered.SentToCounter.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+        if (updateBody.status=="Processing" || resp.status=="Processing")  ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
           return res.json(successResponse(200, "Successfull", {}));
       } else {
         return res.json(errorResponse(404, "Not Found"));

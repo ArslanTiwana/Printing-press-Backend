@@ -24,7 +24,6 @@ class dbLayer {
         INNER JOIN "Client" c ON c.id = jc."clientId"
     `;      
         const [data, metadata] = await db.sequelize.query(query)
-        console.log(data)
         const response = data.map(item => {
             const updatedItem = { ...item, id: item.id.toString() };
             return updatedItem;
@@ -39,7 +38,7 @@ class dbLayer {
         INNER JOIN "Client" c ON c.id = jc."clientId"
         WHERE p.id = ${id}
     `;        const [plate, metadata] = await db.sequelize.query(query)  
-        return plate
+        return plate[0]
      }
     static async create(body) {
         return await models.Plates.create(body);

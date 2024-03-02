@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       media: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: null, // Set default value to null
       },
       isStick: {
         type: DataTypes.BOOLEAN,
@@ -70,6 +71,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       extra: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      sortNo: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },

@@ -14,7 +14,7 @@ class dbLayer {
         WHERE p.id = ${id}
     `;
         const [result, metadata] = await db.sequelize.query(query)
-        return result
+        return result[0]
     }
     static async getAllPending(userId) {
         return await models.Offset.findAll({where:{status:'Pending',createdBy:userId}});

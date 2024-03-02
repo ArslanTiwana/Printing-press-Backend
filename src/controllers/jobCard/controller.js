@@ -3,13 +3,13 @@ const dbLayer = require('./database')
 const Service = require('./service')
 const clientLayer = require("../client/database");
 const otherJobsLayer = require("../otherJob/database");
-
 const weddingCardLayer = require("../weddingCard/database");
 const offsetLayer = require("../offset/database");
 const panaflexLayer = require("../panaflex/database");
 const filmLayer = require("../film/database");
 const colorPrintLayer = require("../colorPrint/database");
 const platesLayer = require("../plates/database");
+const { getIOInstance } = require('../../utils/WebSocket');
 
 class UserController {
   static async create(req, res) {
@@ -34,7 +34,6 @@ class UserController {
 
         if (plates.length != 0) {
           const modifiedBody = Service.modifiedBody(plates, jobCard.id,req.user.id)
-          console.log(modifiedBody)
           plates =await platesLayer.createBulk(modifiedBody)
         }
         if (weddingCard.length != 0) {
@@ -64,6 +63,8 @@ class UserController {
       } else {
         return res.json(errorResponse(401, "JobCard Not created"));
       }
+      const io=getIOInstance()
+      io.emit('updateBoard', {});
       return res.json(successResponse(200, "JobCard Created Sucessfully", {plates,panaflex,weddingCard,colorPrint,film,offset,others}));
     } catch (error) {
       console.log(error)
