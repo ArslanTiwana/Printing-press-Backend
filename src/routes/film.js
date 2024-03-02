@@ -8,5 +8,7 @@ router.post("/create",Authorization,FilmController.create);
 router.put("/update/:id",Authorization,FilmController.update);
 router.delete("/delete/:id",Authorization,FilmController.delete);
 router.get("/get_pending",Authorization,FilmController.getAllPending);
-
+router.get("/proceed/:id",Authorization,FilmController.statusChange);
+router.get("/get_all",Authorization,FilmController.getAllForScrumBoard);
+router.put("/update_scrumboard/:id",Authorization,FilmController.updateScrumboard);
 module.exports = router;

@@ -3,6 +3,7 @@ const {
   errorResponse,
 } = require("../../utils/response/response");
 const dbLayer = require("./database");
+const { getIOInstance } = require('../../utils/WebSocket');
 
 class PlatesController {
   static async create(req, res) {
@@ -39,6 +40,11 @@ class PlatesController {
       if (resp) {
         const result = await dbLayer.update(id, body);
         if (result) {
+          if(body.status != resp.status)
+          {
+            const io=getIOInstance()
+            io.emit('updateBoard', {}); 
+          }
           return res.json(successResponse(200, "Successfull", result));
         }
       } else {
@@ -49,45 +55,8 @@ class PlatesController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
-  static async statusChange(req, res) {
-    try {
-      const { id } = req.params;
-      const resp = await dbLayer.getById(id);
-      if (resp) {
-      
-        const result = await dbLayer.update(id, {status:"Processing",sortNo:-1});
-        if (result) {
-          return res.json(successResponse(200, "Successfull", result));
-        }
-      } else {
-        return res.json(errorResponse(404, "Not Found"));
-      }
-    } catch (error) {
-      console.log(error);
-      return res.json(errorResponse(500, "Internal Server Error"));
-    }
-  }
-  static async updateScrumboard(req, res) {
-    try {
-      const { id } = req.params;
-      const { updateBody, ordered } = req.body;
-      const resp = await dbLayer.getById(id);
-      if (resp) {
-        await dbLayer.update(id, updateBody);
-        console.log("updateBody.status",updateBody.status)
-        console.log("resp.status",resp.status)
-        if (updateBody.status=="Completed" || resp.status=="Completed") ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-        if (updateBody.status=="SentToCounter" || resp.status=="SentToCounter")  ordered.SentToCounter.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-        if (updateBody.status=="Processing" || resp.status=="Processing")  ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
-          return res.json(successResponse(200, "Successfull", {}));
-      } else {
-        return res.json(errorResponse(404, "Not Found"));
-      }
-    } catch (error) {
-      console.log(error);
-      return res.json(errorResponse(500, "Internal Server Error"));
-    }
-  }
+ 
+
   static async getAll(req, res) {
     try {
       const result = await dbLayer.getAll();
@@ -99,17 +68,7 @@ class PlatesController {
       return res.json(errorResponse(500, "Internal Server Error"));
     }
   }
-  static async getAllForScrumBoard(req, res) {
-    try {
-      const result = await dbLayer.getAllForScrumBoard();
-      if (result) {
-        return res.json(successResponse(200, "Successfull", result));
-      }
-    } catch (error) {
-      console.log(error);
-      return res.json(errorResponse(500, "Internal Server Error"));
-    }
-  }
+  
   static async getById(req, res) {
     try {
       const { id } = req.params;
@@ -133,6 +92,55 @@ class PlatesController {
         return res.json(successResponse(200, "Successfull", result));
       } else {
         return res.json(errorResponse(404, " Not Found"));
+      }
+    } catch (error) {
+      console.log(error);
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+  static async getAllForScrumBoard(req, res) {
+    try {
+      const result = await dbLayer.getAllForScrumBoard();
+      if (result) {
+        return res.json(successResponse(200, "Successfull", result));
+      }
+    } catch (error) {
+      console.log(error);
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+  static async statusChange(req, res) {
+    try {
+      const { id } = req.params;
+      const resp = await dbLayer.getById(id);
+      if (resp) {
+        const result = await dbLayer.update(id, {status:"Processing",sortNo:-1});
+        const io=getIOInstance()
+        io.emit('updateBoard', {}); 
+        if (result) {
+          return res.json(successResponse(200, "Successfull", result));
+        }
+      } else {
+        return res.json(errorResponse(404, "Not Found"));
+      }
+    } catch (error) {
+      console.log(error);
+      return res.json(errorResponse(500, "Internal Server Error"));
+    }
+  }
+  static async updateScrumboard(req, res) {
+    try {
+      const { id } = req.params;
+      const { updateBody, ordered } = req.body;
+      const resp = await dbLayer.getById(id);
+      if (resp) {
+        await dbLayer.update(id, updateBody);
+        if (updateBody.status=="Completed" || resp.status=="Completed") ordered.Completed.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+        if (updateBody.status=="SentToCounter" || resp.status=="SentToCounter")  ordered.SentToCounter.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index })));
+        if (updateBody.status=="Processing" || resp.status=="Processing")  ordered.Processing.map(async (item, index) => (await dbLayer.update(parseInt(item.id), { sortNo: index }))); 
+        return res.json(successResponse(200, "Successfull", {}));
+      } else {
+        return res.json(errorResponse(404, "Not Found"));
       }
     } catch (error) {
       console.log(error);

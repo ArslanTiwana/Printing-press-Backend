@@ -10,6 +10,8 @@ router.put("/update/:id",Authorization,OtherJobController.update);
 router.delete("/delete/:id",Authorization,OtherJobController.delete);
 router.put("/update_scrumboard/:id",Authorization,OtherJobController.updateScrumboard);
 router.get("/get_pending",Authorization,OtherJobController.getAllPending);
-
+router.get("/proceed/:id",Authorization,OtherJobController.statusChange);
+router.get("/get_all",Authorization,OtherJobController.getAllForScrumBoard);
+router.put("/update_scrumboard/:id",Authorization,OtherJobController.updateScrumboard);
 
 module.exports = router;
